@@ -1,6 +1,6 @@
-import React from 'react';
-import PlaceholderPage from './PlaceholderPage';
-import { Users } from 'lucide-react';
+import React from "react";
+import PlaceholderPage from "./PlaceholderPage";
+import { Users } from "lucide-react";
 
 export default function Contacts() {
   return (

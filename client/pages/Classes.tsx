@@ -1,31 +1,67 @@
-import React, { useState } from 'react';
-import { useData } from '../contexts/DataContext';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { Badge } from '../components/ui/badge';
-import { BookOpen, Plus, Edit, Trash2, Users, FileText, CheckSquare } from 'lucide-react';
-import { format } from 'date-fns';
+import React, { useState } from "react";
+import { useData } from "../contexts/DataContext";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components/ui/alert-dialog";
+import { Badge } from "../components/ui/badge";
+import {
+  BookOpen,
+  Plus,
+  Edit,
+  Trash2,
+  Users,
+  FileText,
+  CheckSquare,
+} from "lucide-react";
+import { format } from "date-fns";
 
 const colorOptions = [
-  { name: 'Blue', value: '#3b82f6', bg: 'bg-blue-500' },
-  { name: 'Green', value: '#10b981', bg: 'bg-emerald-500' },
-  { name: 'Purple', value: '#8b5cf6', bg: 'bg-violet-500' },
-  { name: 'Orange', value: '#f59e0b', bg: 'bg-amber-500' },
-  { name: 'Red', value: '#ef4444', bg: 'bg-red-500' },
-  { name: 'Pink', value: '#ec4899', bg: 'bg-pink-500' },
-  { name: 'Indigo', value: '#6366f1', bg: 'bg-indigo-500' },
-  { name: 'Teal', value: '#14b8a6', bg: 'bg-teal-500' }
+  { name: "Blue", value: "#3b82f6", bg: "bg-blue-500" },
+  { name: "Green", value: "#10b981", bg: "bg-emerald-500" },
+  { name: "Purple", value: "#8b5cf6", bg: "bg-violet-500" },
+  { name: "Orange", value: "#f59e0b", bg: "bg-amber-500" },
+  { name: "Red", value: "#ef4444", bg: "bg-red-500" },
+  { name: "Pink", value: "#ec4899", bg: "bg-pink-500" },
+  { name: "Indigo", value: "#6366f1", bg: "bg-indigo-500" },
+  { name: "Teal", value: "#14b8a6", bg: "bg-teal-500" },
 ];
 
 export default function Classes() {
-  const { classes, tasks, notes, addClass, updateClass, removeClass } = useData();
+  const { classes, tasks, notes, addClass, updateClass, removeClass } =
+    useData();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingClass, setEditingClass] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', color: colorOptions[0].value });
+  const [formData, setFormData] = useState({
+    name: "",
+    color: colorOptions[0].value,
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +74,7 @@ export default function Classes() {
       addClass({ name: formData.name, color: formData.color });
     }
 
-    setFormData({ name: '', color: colorOptions[0].value });
+    setFormData({ name: "", color: colorOptions[0].value });
     setShowAddDialog(false);
   };
 
@@ -53,19 +89,21 @@ export default function Classes() {
   };
 
   const getClassStats = (classId: string) => {
-    const classTasks = tasks.filter(task => task.classID === classId);
-    const classNotes = notes.filter(note => note.classID === classId);
-    const completedTasks = classTasks.filter(task => task.status === 'completed').length;
+    const classTasks = tasks.filter((task) => task.classID === classId);
+    const classNotes = notes.filter((note) => note.classID === classId);
+    const completedTasks = classTasks.filter(
+      (task) => task.status === "completed",
+    ).length;
 
     return {
       totalTasks: classTasks.length,
       completedTasks,
-      totalNotes: classNotes.length
+      totalNotes: classNotes.length,
     };
   };
 
   const resetForm = () => {
-    setFormData({ name: '', color: colorOptions[0].value });
+    setFormData({ name: "", color: colorOptions[0].value });
     setEditingClass(null);
   };
 
@@ -75,13 +113,17 @@ export default function Classes() {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Classes</h1>
           <p className="text-muted-foreground">
-            Manage your classes and subjects. Organize your academic work by class.
+            Manage your classes and subjects. Organize your academic work by
+            class.
           </p>
         </div>
-        <Dialog open={showAddDialog} onOpenChange={(open) => {
-          setShowAddDialog(open);
-          if (!open) resetForm();
-        }}>
+        <Dialog
+          open={showAddDialog}
+          onOpenChange={(open) => {
+            setShowAddDialog(open);
+            if (!open) resetForm();
+          }}
+        >
           <DialogTrigger asChild>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
@@ -91,9 +133,13 @@ export default function Classes() {
           <DialogContent className="sm:max-w-[425px]">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
-                <DialogTitle>{editingClass ? 'Edit Class' : 'Add New Class'}</DialogTitle>
+                <DialogTitle>
+                  {editingClass ? "Edit Class" : "Add New Class"}
+                </DialogTitle>
                 <DialogDescription>
-                  {editingClass ? 'Update your class information.' : 'Create a new class to organize your academic work.'}
+                  {editingClass
+                    ? "Update your class information."
+                    : "Create a new class to organize your academic work."}
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -103,7 +149,9 @@ export default function Classes() {
                     id="name"
                     placeholder="e.g., Mathematics, History, Biology"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -114,9 +162,13 @@ export default function Classes() {
                       <button
                         key={color.value}
                         type="button"
-                        onClick={() => setFormData({ ...formData, color: color.value })}
+                        onClick={() =>
+                          setFormData({ ...formData, color: color.value })
+                        }
                         className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
-                          formData.color === color.value ? 'border-foreground ring-2 ring-ring' : 'border-border'
+                          formData.color === color.value
+                            ? "border-foreground ring-2 ring-ring"
+                            : "border-border"
                         } ${color.bg}`}
                         title={color.name}
                       />
@@ -125,11 +177,15 @@ export default function Classes() {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setShowAddDialog(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowAddDialog(false)}
+                >
                   Cancel
                 </Button>
                 <Button type="submit">
-                  {editingClass ? 'Update Class' : 'Create Class'}
+                  {editingClass ? "Update Class" : "Create Class"}
                 </Button>
               </DialogFooter>
             </form>
@@ -153,12 +209,16 @@ export default function Classes() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {classes.map((classItem) => {
             const stats = getClassStats(classItem.id);
-            const completionPercentage = stats.totalTasks > 0
-              ? Math.round((stats.completedTasks / stats.totalTasks) * 100)
-              : 0;
+            const completionPercentage =
+              stats.totalTasks > 0
+                ? Math.round((stats.completedTasks / stats.totalTasks) * 100)
+                : 0;
 
             return (
-              <Card key={classItem.id} className="hover:shadow-md transition-shadow">
+              <Card
+                key={classItem.id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
@@ -167,9 +227,11 @@ export default function Classes() {
                         style={{ backgroundColor: classItem.color }}
                       />
                       <div>
-                        <CardTitle className="text-lg">{classItem.name}</CardTitle>
+                        <CardTitle className="text-lg">
+                          {classItem.name}
+                        </CardTitle>
                         <CardDescription>
-                          Created {format(classItem.createdAt, 'MMM d, yyyy')}
+                          Created {format(classItem.createdAt, "MMM d, yyyy")}
                         </CardDescription>
                       </div>
                     </div>
@@ -191,17 +253,24 @@ export default function Classes() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Delete Class</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete "{classItem.name}"? This action cannot be undone.
-                              {(stats.totalTasks > 0 || stats.totalNotes > 0) && (
+                              Are you sure you want to delete "{classItem.name}
+                              "? This action cannot be undone.
+                              {(stats.totalTasks > 0 ||
+                                stats.totalNotes > 0) && (
                                 <span className="block mt-2 text-destructive">
-                                  Warning: This will also remove {stats.totalTasks} tasks and {stats.totalNotes} notes associated with this class.
+                                  Warning: This will also remove{" "}
+                                  {stats.totalTasks} tasks and{" "}
+                                  {stats.totalNotes} notes associated with this
+                                  class.
                                 </span>
                               )}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(classItem.id)}>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(classItem.id)}
+                            >
                               Delete
                             </AlertDialogAction>
                           </AlertDialogFooter>
@@ -215,20 +284,26 @@ export default function Classes() {
                     <div className="space-y-1">
                       <div className="flex items-center justify-center gap-1">
                         <CheckSquare className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">{stats.totalTasks}</span>
+                        <span className="text-sm font-medium">
+                          {stats.totalTasks}
+                        </span>
                       </div>
                       <p className="text-xs text-muted-foreground">Tasks</p>
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-center gap-1">
                         <FileText className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">{stats.totalNotes}</span>
+                        <span className="text-sm font-medium">
+                          {stats.totalNotes}
+                        </span>
                       </div>
                       <p className="text-xs text-muted-foreground">Notes</p>
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-center gap-1">
-                        <span className="text-sm font-medium">{completionPercentage}%</span>
+                        <span className="text-sm font-medium">
+                          {completionPercentage}%
+                        </span>
                       </div>
                       <p className="text-xs text-muted-foreground">Complete</p>
                     </div>
@@ -238,14 +313,16 @@ export default function Classes() {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span>Progress</span>
-                        <span>{stats.completedTasks}/{stats.totalTasks}</span>
+                        <span>
+                          {stats.completedTasks}/{stats.totalTasks}
+                        </span>
                       </div>
                       <div className="w-full bg-secondary rounded-full h-2">
                         <div
                           className="h-2 rounded-full transition-all"
                           style={{
                             width: `${completionPercentage}%`,
-                            backgroundColor: classItem.color
+                            backgroundColor: classItem.color,
                           }}
                         />
                       </div>

@@ -1,6 +1,6 @@
-import React from 'react';
-import PlaceholderPage from './PlaceholderPage';
-import { FileText } from 'lucide-react';
+import React from "react";
+import PlaceholderPage from "./PlaceholderPage";
+import { FileText } from "lucide-react";
 
 export default function Notes() {
   return (

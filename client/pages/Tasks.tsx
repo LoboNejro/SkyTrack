@@ -1,58 +1,111 @@
-import React, { useState, useMemo } from 'react';
-import { useData } from '../contexts/DataContext';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Textarea } from '../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { Badge } from '../components/ui/badge';
-import { Checkbox } from '../components/ui/checkbox';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import React, { useState, useMemo } from "react";
+import { useData } from "../contexts/DataContext";
+import { Button } from "../components/ui/button";
 import {
-  CheckSquare, Plus, Edit, Trash2, Calendar, Clock, AlertCircle,
-  Filter, Search, MoreHorizontal
-} from 'lucide-react';
-import { format, isToday, isTomorrow, isPast, addDays } from 'date-fns';
-import { Task } from '../contexts/DataContext';
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components/ui/alert-dialog";
+import { Badge } from "../components/ui/badge";
+import { Checkbox } from "../components/ui/checkbox";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import {
+  CheckSquare,
+  Plus,
+  Edit,
+  Trash2,
+  Calendar,
+  Clock,
+  AlertCircle,
+  Filter,
+  Search,
+  MoreHorizontal,
+} from "lucide-react";
+import { format, isToday, isTomorrow, isPast, addDays } from "date-fns";
+import { Task } from "../contexts/DataContext";
 
 export default function Tasks() {
   const { classes, tasks, addTask, updateTask, removeTask } = useData();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedClass, setSelectedClass] = useState<string>('all');
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedClass, setSelectedClass] = useState<string>("all");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    classID: '',
-    dueDate: '',
-    status: 'pending' as Task['status']
+    title: "",
+    description: "",
+    classID: "",
+    dueDate: "",
+    status: "pending" as Task["status"],
   });
 
   const filteredTasks = useMemo(() => {
-    return tasks.filter(task => {
-      const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           task.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesClass = selectedClass === 'all' || task.classID === selectedClass;
-      const matchesStatus = selectedStatus === 'all' || task.status === selectedStatus;
+    return tasks
+      .filter((task) => {
+        const matchesSearch =
+          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          task.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesClass =
+          selectedClass === "all" || task.classID === selectedClass;
+        const matchesStatus =
+          selectedStatus === "all" || task.status === selectedStatus;
 
-      return matchesSearch && matchesClass && matchesStatus;
-    }).sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
+        return matchesSearch && matchesClass && matchesStatus;
+      })
+      .sort(
+        (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(),
+      );
   }, [tasks, searchQuery, selectedClass, selectedStatus]);
 
   const tasksByStatus = {
-    pending: filteredTasks.filter(task => task.status === 'pending'),
-    completed: filteredTasks.filter(task => task.status === 'completed'),
-    overdue: filteredTasks.filter(task => task.status === 'pending' && isPast(new Date(task.dueDate)))
+    pending: filteredTasks.filter((task) => task.status === "pending"),
+    completed: filteredTasks.filter((task) => task.status === "completed"),
+    overdue: filteredTasks.filter(
+      (task) => task.status === "pending" && isPast(new Date(task.dueDate)),
+    ),
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title.trim() || !formData.classID || !formData.dueDate) return;
+    if (!formData.title.trim() || !formData.classID || !formData.dueDate)
+      return;
 
     if (editingTask) {
       updateTask(editingTask, {
@@ -60,7 +113,7 @@ export default function Tasks() {
         description: formData.description,
         classID: formData.classID,
         dueDate: new Date(formData.dueDate),
-        status: formData.status
+        status: formData.status,
       });
       setEditingTask(null);
     } else {
@@ -69,7 +122,7 @@ export default function Tasks() {
         description: formData.description,
         classID: formData.classID,
         dueDate: new Date(formData.dueDate),
-        status: formData.status
+        status: formData.status,
       });
     }
 
@@ -82,8 +135,8 @@ export default function Tasks() {
       title: task.title,
       description: task.description,
       classID: task.classID,
-      dueDate: format(task.dueDate, 'yyyy-MM-dd'),
-      status: task.status
+      dueDate: format(task.dueDate, "yyyy-MM-dd"),
+      status: task.status,
     });
     setEditingTask(task.id);
     setShowAddDialog(true);
@@ -95,56 +148,62 @@ export default function Tasks() {
 
   const handleToggleComplete = (task: Task) => {
     updateTask(task.id, {
-      status: task.status === 'completed' ? 'pending' : 'completed'
+      status: task.status === "completed" ? "pending" : "completed",
     });
   };
 
   const resetForm = () => {
     setFormData({
-      title: '',
-      description: '',
-      classID: '',
-      dueDate: '',
-      status: 'pending'
+      title: "",
+      description: "",
+      classID: "",
+      dueDate: "",
+      status: "pending",
     });
     setEditingTask(null);
   };
 
   const getDateLabel = (date: Date) => {
-    if (isToday(date)) return 'Today';
-    if (isTomorrow(date)) return 'Tomorrow';
-    if (isPast(date)) return 'Overdue';
-    return format(date, 'MMM d');
+    if (isToday(date)) return "Today";
+    if (isTomorrow(date)) return "Tomorrow";
+    if (isPast(date)) return "Overdue";
+    return format(date, "MMM d");
   };
 
   const getPriorityColor = (task: Task) => {
-    if (task.status === 'completed') return 'text-green-600';
-    if (isPast(new Date(task.dueDate))) return 'text-red-600';
-    if (isToday(new Date(task.dueDate)) || isTomorrow(new Date(task.dueDate))) return 'text-orange-600';
-    return 'text-blue-600';
+    if (task.status === "completed") return "text-green-600";
+    if (isPast(new Date(task.dueDate))) return "text-red-600";
+    if (isToday(new Date(task.dueDate)) || isTomorrow(new Date(task.dueDate)))
+      return "text-orange-600";
+    return "text-blue-600";
   };
 
   const TaskCard = ({ task }: { task: Task }) => {
-    const classItem = classes.find(c => c.id === task.classID);
-    const isOverdue = isPast(new Date(task.dueDate)) && task.status === 'pending';
+    const classItem = classes.find((c) => c.id === task.classID);
+    const isOverdue =
+      isPast(new Date(task.dueDate)) && task.status === "pending";
 
     return (
-      <Card className={`hover:shadow-md transition-shadow ${
-        task.status === 'completed' ? 'opacity-70' : ''
-      } ${isOverdue ? 'border-red-200 bg-red-50/50' : ''}`}>
+      <Card
+        className={`hover:shadow-md transition-shadow ${
+          task.status === "completed" ? "opacity-70" : ""
+        } ${isOverdue ? "border-red-200 bg-red-50/50" : ""}`}
+      >
         <CardHeader className="pb-3">
           <div className="flex items-start gap-3">
             <Checkbox
-              checked={task.status === 'completed'}
+              checked={task.status === "completed"}
               onCheckedChange={() => handleToggleComplete(task)}
               className="mt-1"
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <CardTitle className={`text-lg leading-tight ${
-                    task.status === 'completed' ? 'line-through' : ''
-                  }`}>
+                  <CardTitle
+                    className={`text-lg leading-tight ${
+                      task.status === "completed" ? "line-through" : ""
+                    }`}
+                  >
                     {task.title}
                   </CardTitle>
                   {task.description && (
@@ -171,12 +230,15 @@ export default function Tasks() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Task</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete "{task.title}"? This action cannot be undone.
+                          Are you sure you want to delete "{task.title}"? This
+                          action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleDelete(task.id)}>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(task.id)}
+                        >
                           Delete
                         </AlertDialogAction>
                       </AlertDialogFooter>
@@ -203,7 +265,7 @@ export default function Tasks() {
                   {getDateLabel(task.dueDate)}
                   {isOverdue && <AlertCircle className="h-3 w-3 ml-1" />}
                 </Badge>
-                {task.status === 'completed' && (
+                {task.status === "completed" && (
                   <Badge variant="default" className="text-xs bg-green-600">
                     Completed
                   </Badge>
@@ -225,10 +287,13 @@ export default function Tasks() {
             Track and manage your assignments and to-dos.
           </p>
         </div>
-        <Dialog open={showAddDialog} onOpenChange={(open) => {
-          setShowAddDialog(open);
-          if (!open) resetForm();
-        }}>
+        <Dialog
+          open={showAddDialog}
+          onOpenChange={(open) => {
+            setShowAddDialog(open);
+            if (!open) resetForm();
+          }}
+        >
           <DialogTrigger asChild>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
@@ -238,9 +303,13 @@ export default function Tasks() {
           <DialogContent className="sm:max-w-[500px]">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
-                <DialogTitle>{editingTask ? 'Edit Task' : 'Add New Task'}</DialogTitle>
+                <DialogTitle>
+                  {editingTask ? "Edit Task" : "Add New Task"}
+                </DialogTitle>
                 <DialogDescription>
-                  {editingTask ? 'Update your task details.' : 'Create a new task to track your work.'}
+                  {editingTask
+                    ? "Update your task details."
+                    : "Create a new task to track your work."}
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -250,7 +319,9 @@ export default function Tasks() {
                     id="title"
                     placeholder="e.g., Math homework chapter 5"
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -260,7 +331,9 @@ export default function Tasks() {
                     id="description"
                     placeholder="Optional task description"
                     value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
                     rows={3}
                   />
                 </div>
@@ -269,7 +342,9 @@ export default function Tasks() {
                     <Label htmlFor="class">Class</Label>
                     <Select
                       value={formData.classID}
-                      onValueChange={(value) => setFormData({ ...formData, classID: value })}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, classID: value })
+                      }
                       required
                     >
                       <SelectTrigger>
@@ -296,7 +371,9 @@ export default function Tasks() {
                       id="dueDate"
                       type="date"
                       value={formData.dueDate}
-                      onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, dueDate: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -306,7 +383,12 @@ export default function Tasks() {
                     <Label htmlFor="status">Status</Label>
                     <Select
                       value={formData.status}
-                      onValueChange={(value) => setFormData({ ...formData, status: value as Task['status'] })}
+                      onValueChange={(value) =>
+                        setFormData({
+                          ...formData,
+                          status: value as Task["status"],
+                        })
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -320,11 +402,15 @@ export default function Tasks() {
                 )}
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setShowAddDialog(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowAddDialog(false)}
+                >
                   Cancel
                 </Button>
                 <Button type="submit">
-                  {editingTask ? 'Update Task' : 'Create Task'}
+                  {editingTask ? "Update Task" : "Create Task"}
                 </Button>
               </DialogFooter>
             </form>
@@ -411,16 +497,18 @@ export default function Tasks() {
           <CheckSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
           <h3 className="text-lg font-medium mb-2">No tasks found</h3>
           <p className="text-muted-foreground mb-4">
-            {searchQuery || selectedClass !== 'all' || selectedStatus !== 'all'
-              ? 'Try adjusting your filters or search terms.'
-              : 'Create your first task to get started.'}
+            {searchQuery || selectedClass !== "all" || selectedStatus !== "all"
+              ? "Try adjusting your filters or search terms."
+              : "Create your first task to get started."}
           </p>
-          {!searchQuery && selectedClass === 'all' && selectedStatus === 'all' && (
-            <Button onClick={() => setShowAddDialog(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Your First Task
-            </Button>
-          )}
+          {!searchQuery &&
+            selectedClass === "all" &&
+            selectedStatus === "all" && (
+              <Button onClick={() => setShowAddDialog(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Your First Task
+              </Button>
+            )}
         </div>
       ) : (
         <Tabs defaultValue="all" className="space-y-6">

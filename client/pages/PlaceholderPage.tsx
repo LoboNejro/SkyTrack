@@ -1,7 +1,13 @@
-import React from 'react';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Construction } from 'lucide-react';
+import React from "react";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Construction } from "lucide-react";
 
 interface PlaceholderPageProps {
   title: string;
@@ -9,7 +15,11 @@ interface PlaceholderPageProps {
   icon?: React.ReactNode;
 }
 
-export default function PlaceholderPage({ title, description, icon }: PlaceholderPageProps) {
+export default function PlaceholderPage({
+  title,
+  description,
+  icon,
+}: PlaceholderPageProps) {
   return (
     <div className="flex items-center justify-center min-h-[60vh]">
       <Card className="w-full max-w-md text-center">
@@ -22,11 +32,10 @@ export default function PlaceholderPage({ title, description, icon }: Placeholde
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-4">
-            This page is ready to be built! Continue prompting to add the specific functionality you need here.
+            This page is ready to be built! Continue prompting to add the
+            specific functionality you need here.
           </p>
-          <Button variant="outline">
-            Coming Soon
-          </Button>
+          <Button variant="outline">Coming Soon</Button>
         </CardContent>
       </Card>
     </div>

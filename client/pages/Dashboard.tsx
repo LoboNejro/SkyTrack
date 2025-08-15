@@ -1,11 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useData } from '../contexts/DataContext';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Progress } from '../components/ui/progress';
-import { Badge } from '../components/ui/badge';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useData } from "../contexts/DataContext";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Progress } from "../components/ui/progress";
+import { Badge } from "../components/ui/badge";
 import {
   BookOpen,
   CheckSquare,
@@ -15,82 +21,92 @@ import {
   Plus,
   Clock,
   TrendingUp,
-  AlertCircle
-} from 'lucide-react';
-import { format, isToday, isTomorrow, addDays } from 'date-fns';
+  AlertCircle,
+} from "lucide-react";
+import { format, isToday, isTomorrow, addDays } from "date-fns";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const { classes, tasks, notes, contacts, events } = useData();
 
-  const completedTasks = tasks.filter(task => task.status === 'completed').length;
+  const completedTasks = tasks.filter(
+    (task) => task.status === "completed",
+  ).length;
   const totalTasks = tasks.length;
-  const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  const completionPercentage =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   const upcomingTasks = tasks
-    .filter(task => task.status === 'pending')
-    .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
+    .filter((task) => task.status === "pending")
+    .sort(
+      (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(),
+    )
     .slice(0, 5);
 
   const upcomingEvents = events
-    .filter(event => new Date(event.date) >= new Date())
+    .filter((event) => new Date(event.date) >= new Date())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 3);
 
   const recentNotes = notes
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
     .slice(0, 3);
 
   const getDateLabel = (date: Date) => {
-    if (isToday(date)) return 'Today';
-    if (isTomorrow(date)) return 'Tomorrow';
-    return format(date, 'MMM d');
+    if (isToday(date)) return "Today";
+    if (isTomorrow(date)) return "Tomorrow";
+    return format(date, "MMM d");
   };
 
   const getTaskPriority = (dueDate: Date) => {
     const now = new Date();
     const due = new Date(dueDate);
-    const diffDays = Math.ceil((due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return 'overdue';
-    if (diffDays <= 1) return 'urgent';
-    if (diffDays <= 3) return 'high';
-    return 'normal';
+    const diffDays = Math.ceil(
+      (due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    if (diffDays < 0) return "overdue";
+    if (diffDays <= 1) return "urgent";
+    if (diffDays <= 3) return "high";
+    return "normal";
   };
 
   const stats = [
     {
-      title: 'Classes',
+      title: "Classes",
       value: classes.length,
-      description: 'Active classes',
+      description: "Active classes",
       icon: BookOpen,
-      href: '/dashboard/classes',
-      color: 'text-blue-600'
+      href: "/dashboard/classes",
+      color: "text-blue-600",
     },
     {
-      title: 'Tasks',
+      title: "Tasks",
       value: tasks.length,
       description: `${completedTasks} completed`,
       icon: CheckSquare,
-      href: '/dashboard/tasks',
-      color: 'text-green-600'
+      href: "/dashboard/tasks",
+      color: "text-green-600",
     },
     {
-      title: 'Notes',
+      title: "Notes",
       value: notes.length,
-      description: 'Total notes',
+      description: "Total notes",
       icon: FileText,
-      href: '/dashboard/notes',
-      color: 'text-purple-600'
+      href: "/dashboard/notes",
+      color: "text-purple-600",
     },
     {
-      title: 'Contacts',
+      title: "Contacts",
       value: contacts.length,
-      description: 'Saved contacts',
+      description: "Saved contacts",
       icon: Users,
-      href: '/dashboard/contacts',
-      color: 'text-orange-600'
-    }
+      href: "/dashboard/contacts",
+      color: "text-orange-600",
+    },
   ];
 
   return (
@@ -134,7 +150,12 @@ export default function Dashboard() {
               <p className="text-xs text-muted-foreground">
                 {stat.description}
               </p>
-              <Button variant="ghost" size="sm" className="mt-2 p-0 h-auto" asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 p-0 h-auto"
+                asChild
+              >
                 <Link to={stat.href}>View all →</Link>
               </Button>
             </CardContent>
@@ -173,7 +194,9 @@ export default function Dashboard() {
               Upcoming Tasks
             </CardTitle>
             <CardDescription>
-              {upcomingTasks.length === 0 ? 'No upcoming tasks' : `${upcomingTasks.length} pending tasks`}
+              {upcomingTasks.length === 0
+                ? "No upcoming tasks"
+                : `${upcomingTasks.length} pending tasks`}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -191,10 +214,13 @@ export default function Dashboard() {
             ) : (
               upcomingTasks.map((task) => {
                 const priority = getTaskPriority(task.dueDate);
-                const className = classes.find(c => c.id === task.classID);
-                
+                const className = classes.find((c) => c.id === task.classID);
+
                 return (
-                  <div key={task.id} className="flex items-center gap-3 p-3 rounded-lg border">
+                  <div
+                    key={task.id}
+                    className="flex items-center gap-3 p-3 rounded-lg border"
+                  >
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">{task.title}</p>
                       <div className="flex items-center gap-2 mt-1">
@@ -206,7 +232,7 @@ export default function Dashboard() {
                         <span className="text-xs text-muted-foreground">
                           Due {getDateLabel(task.dueDate)}
                         </span>
-                        {priority === 'overdue' && (
+                        {priority === "overdue" && (
                           <AlertCircle className="h-3 w-3 text-red-500" />
                         )}
                       </div>
@@ -230,7 +256,9 @@ export default function Dashboard() {
               Upcoming Events
             </CardTitle>
             <CardDescription>
-              {upcomingEvents.length === 0 ? 'No upcoming events' : `${upcomingEvents.length} upcoming events`}
+              {upcomingEvents.length === 0
+                ? "No upcoming events"
+                : `${upcomingEvents.length} upcoming events`}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -247,10 +275,15 @@ export default function Dashboard() {
               </div>
             ) : (
               upcomingEvents.map((event) => (
-                <div key={event.id} className="flex items-center gap-3 p-3 rounded-lg border">
+                <div
+                  key={event.id}
+                  className="flex items-center gap-3 p-3 rounded-lg border"
+                >
                   <div className="flex-1 min-w-0">
                     <p className="font-medium truncate">{event.title}</p>
-                    <p className="text-sm text-muted-foreground truncate">{event.description}</p>
+                    <p className="text-sm text-muted-foreground truncate">
+                      {event.description}
+                    </p>
                     <p className="text-xs text-muted-foreground mt-1">
                       {getDateLabel(event.date)}
                     </p>
@@ -273,7 +306,9 @@ export default function Dashboard() {
               Recent Notes
             </CardTitle>
             <CardDescription>
-              {recentNotes.length === 0 ? 'No notes yet' : `${recentNotes.length} recent notes`}
+              {recentNotes.length === 0
+                ? "No notes yet"
+                : `${recentNotes.length} recent notes`}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -290,10 +325,13 @@ export default function Dashboard() {
               </div>
             ) : (
               recentNotes.map((note) => {
-                const className = classes.find(c => c.id === note.classID);
-                
+                const className = classes.find((c) => c.id === note.classID);
+
                 return (
-                  <div key={note.id} className="flex items-center gap-3 p-3 rounded-lg border">
+                  <div
+                    key={note.id}
+                    className="flex items-center gap-3 p-3 rounded-lg border"
+                  >
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">{note.title}</p>
                       <div className="flex items-center gap-2 mt-1">
@@ -303,7 +341,7 @@ export default function Dashboard() {
                           </Badge>
                         )}
                         <span className="text-xs text-muted-foreground">
-                          {format(note.createdAt, 'MMM d')}
+                          {format(note.createdAt, "MMM d")}
                         </span>
                       </div>
                     </div>
