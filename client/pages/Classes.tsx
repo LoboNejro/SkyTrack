@@ -55,7 +55,7 @@ const colorOptions = [
 ];
 
 export default function Classes() {
-  const { classes, tasks, notes, addClass, updateClass, removeClass } =
+  const { classes, tasks, notes, events, addClass, updateClass, removeClass } =
     useData();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingClass, setEditingClass] = useState<string | null>(null);
