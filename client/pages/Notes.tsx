@@ -121,15 +121,18 @@ export default function Notes() {
       <Card className="hover:shadow-md transition-shadow cursor-pointer group">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
-            <div className="flex-1 min-w-0" onClick={() => handleView(note)}>
+            <Link
+              to={`/dashboard/notes/${note.id}`}
+              className="flex-1 min-w-0"
+            >
               <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
                 {note.title}
               </CardTitle>
               <div className="flex items-center gap-2 mt-2">
                 {classItem && (
                   <Badge variant="secondary" className="text-xs">
-                    <div 
-                      className="h-2 w-2 rounded-full mr-1" 
+                    <div
+                      className="h-2 w-2 rounded-full mr-1"
                       style={{ backgroundColor: classItem.color }}
                     />
                     {classItem.name}
@@ -145,7 +148,7 @@ export default function Notes() {
                   </Badge>
                 )}
               </div>
-            </div>
+            </Link>
             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <Button
                 variant="ghost"
@@ -195,11 +198,13 @@ export default function Notes() {
             </div>
           </div>
         </CardHeader>
-        <CardContent onClick={() => handleView(note)}>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {truncateContent(note.content)}
-          </p>
-        </CardContent>
+        <Link to={`/dashboard/notes/${note.id}`}>
+          <CardContent>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {truncateContent(note.content)}
+            </p>
+          </CardContent>
+        </Link>
       </Card>
     );
   };
