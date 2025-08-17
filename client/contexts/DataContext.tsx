@@ -37,6 +37,7 @@ export interface Contact {
   type: "friend" | "teacher" | "other";
   email: string;
   phone: string;
+  photoURL?: string;
   createdAt: Date;
 }
 
