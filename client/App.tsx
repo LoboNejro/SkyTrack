@@ -23,6 +23,7 @@ import Classes from "./pages/Classes";
 import ClassDetail from "./pages/ClassDetail";
 import Tasks from "./pages/Tasks";
 import Notes from "./pages/Notes";
+import NoteDetail from "./pages/NoteDetail";
 import Contacts from "./pages/Contacts";
 import Calendar from "./pages/Calendar";
 import NotFound from "./pages/NotFound";
