@@ -52,6 +52,7 @@ const App = () => (
               >
                 <Route index element={<Dashboard />} />
                 <Route path="classes" element={<Classes />} />
+                <Route path="classes/:classId" element={<ClassDetail />} />
                 <Route path="tasks" element={<Tasks />} />
                 <Route path="notes" element={<Notes />} />
                 <Route path="contacts" element={<Contacts />} />
