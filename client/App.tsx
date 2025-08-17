@@ -27,6 +27,7 @@ import Notes from "./pages/Notes";
 import NoteDetail from "./pages/NoteDetail";
 import Contacts from "./pages/Contacts";
 import Calendar from "./pages/Calendar";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
