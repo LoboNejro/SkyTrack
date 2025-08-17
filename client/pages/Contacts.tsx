@@ -63,6 +63,7 @@ export default function Contacts() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
+        photoURL: formData.photoURL,
         type: formData.type
       });
       setEditingContact(null);
@@ -71,6 +72,7 @@ export default function Contacts() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
+        photoURL: formData.photoURL,
         type: formData.type
       });
     }
@@ -84,6 +86,7 @@ export default function Contacts() {
       name: contact.name,
       email: contact.email,
       phone: contact.phone,
+      photoURL: contact.photoURL || '',
       type: contact.type
     });
     setEditingContact(contact.id);
@@ -99,6 +102,7 @@ export default function Contacts() {
       name: '',
       email: '',
       phone: '',
+      photoURL: '',
       type: 'friend'
     });
     setEditingContact(null);
