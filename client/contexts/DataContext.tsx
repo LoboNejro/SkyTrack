@@ -46,6 +46,7 @@ export interface Event {
   title: string;
   description: string;
   date: Date;
+  classID?: string;
   createdAt: Date;
 }
 
