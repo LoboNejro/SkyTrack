@@ -194,9 +194,25 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   };
 
   const removeClass = (id: string) => {
+    // Remove the class
     const updatedClasses = classes.filter((c) => c.id !== id);
     setClasses(updatedClasses);
     saveData("classes", updatedClasses);
+
+    // Remove associated tasks
+    const updatedTasks = tasks.filter((t) => t.classID !== id);
+    setTasks(updatedTasks);
+    saveData("tasks", updatedTasks);
+
+    // Remove associated notes
+    const updatedNotes = notes.filter((n) => n.classID !== id);
+    setNotes(updatedNotes);
+    saveData("notes", updatedNotes);
+
+    // Remove associated events
+    const updatedEvents = events.filter((e) => e.classID !== id);
+    setEvents(updatedEvents);
+    saveData("events", updatedEvents);
   };
 
   const addTask = (taskData: Omit<Task, "id" | "ownerUID" | "createdAt">) => {
