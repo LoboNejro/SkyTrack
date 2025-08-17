@@ -225,31 +225,41 @@ export default function Classes() {
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
+                    <Link
+                      to={`/dashboard/classes/${classItem.id}`}
+                      className="flex items-center gap-3 flex-1 min-w-0"
+                    >
                       <div
                         className="h-4 w-4 rounded-full"
                         style={{ backgroundColor: classItem.color }}
                       />
                       <div>
-                        <CardTitle className="text-lg">
+                        <CardTitle className="text-lg group-hover:text-primary transition-colors">
                           {classItem.name}
                         </CardTitle>
                         <CardDescription>
                           Created {format(classItem.createdAt, "MMM d, yyyy")}
                         </CardDescription>
                       </div>
-                    </div>
-                    <div className="flex gap-1">
+                    </Link>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleEdit(classItem)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(classItem);
+                        }}
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </AlertDialogTrigger>
@@ -284,65 +294,67 @@ export default function Classes() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-4 gap-3 text-center">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-center gap-1">
-                        <CheckSquare className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">
-                          {stats.totalTasks}
-                        </span>
+                <Link to={`/dashboard/classes/${classItem.id}`}>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-4 gap-3 text-center">
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-center gap-1">
+                          <CheckSquare className="h-3 w-3 text-muted-foreground" />
+                          <span className="text-sm font-medium">
+                            {stats.totalTasks}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Tasks</p>
                       </div>
-                      <p className="text-xs text-muted-foreground">Tasks</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-center gap-1">
-                        <FileText className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">
-                          {stats.totalNotes}
-                        </span>
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-center gap-1">
+                          <FileText className="h-3 w-3 text-muted-foreground" />
+                          <span className="text-sm font-medium">
+                            {stats.totalNotes}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Notes</p>
                       </div>
-                      <p className="text-xs text-muted-foreground">Notes</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-center gap-1">
-                        <Calendar className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">
-                          {stats.totalEvents}
-                        </span>
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-center gap-1">
+                          <Calendar className="h-3 w-3 text-muted-foreground" />
+                          <span className="text-sm font-medium">
+                            {stats.totalEvents}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Events</p>
                       </div>
-                      <p className="text-xs text-muted-foreground">Events</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-center gap-1">
-                        <span className="text-sm font-medium">
-                          {completionPercentage}%
-                        </span>
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-center gap-1">
+                          <span className="text-sm font-medium">
+                            {completionPercentage}%
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Complete</p>
                       </div>
-                      <p className="text-xs text-muted-foreground">Complete</p>
                     </div>
-                  </div>
 
-                  {stats.totalTasks > 0 && (
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span>
-                          {stats.completedTasks}/{stats.totalTasks}
-                        </span>
+                    {stats.totalTasks > 0 && (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Progress</span>
+                          <span>
+                            {stats.completedTasks}/{stats.totalTasks}
+                          </span>
+                        </div>
+                        <div className="w-full bg-secondary rounded-full h-2">
+                          <div
+                            className="h-2 rounded-full transition-all"
+                            style={{
+                              width: `${completionPercentage}%`,
+                              backgroundColor: classItem.color,
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="w-full bg-secondary rounded-full h-2">
-                        <div
-                          className="h-2 rounded-full transition-all"
-                          style={{
-                            width: `${completionPercentage}%`,
-                            backgroundColor: classItem.color,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
+                    )}
+                  </CardContent>
+                </Link>
               </Card>
             );
           })}
