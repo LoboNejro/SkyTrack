@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
@@ -17,38 +18,24 @@ import { toast } from '../hooks/use-toast';
 
 const themeColors = [
   { name: 'Azul', value: 'blue', color: '#3b82f6', class: 'bg-blue-500' },
-  { name: 'Slate', value: 'slate', color: '#64748b', class: 'bg-slate-500' },
-  { name: 'Gris', value: 'gray', color: '#6b7280', class: 'bg-gray-500' },
-  { name: 'Zinc', value: 'zinc', color: '#71717a', class: 'bg-zinc-500' },
-  { name: 'Neutral', value: 'neutral', color: '#737373', class: 'bg-neutral-500' },
-  { name: 'Stone', value: 'stone', color: '#78716c', class: 'bg-stone-500' },
   { name: 'Rojo', value: 'red', color: '#ef4444', class: 'bg-red-500' },
-  { name: 'Orange', value: 'orange', color: '#f97316', class: 'bg-orange-500' },
-  { name: 'Amber', value: 'amber', color: '#f59e0b', class: 'bg-amber-500' },
-  { name: 'Amarillo', value: 'yellow', color: '#eab308', class: 'bg-yellow-500' },
-  { name: 'Lima', value: 'lime', color: '#84cc16', class: 'bg-lime-500' },
   { name: 'Verde', value: 'green', color: '#22c55e', class: 'bg-green-500' },
-  { name: 'Emerald', value: 'emerald', color: '#10b981', class: 'bg-emerald-500' },
-  { name: 'Teal', value: 'teal', color: '#14b8a6', class: 'bg-teal-500' },
-  { name: 'Cyan', value: 'cyan', color: '#06b6d4', class: 'bg-cyan-500' },
-  { name: 'Sky', value: 'sky', color: '#0ea5e9', class: 'bg-sky-500' },
-  { name: 'Índigo', value: 'indigo', color: '#6366f1', class: 'bg-indigo-500' },
-  { name: 'Violeta', value: 'violet', color: '#8b5cf6', class: 'bg-violet-500' },
   { name: 'Púrpura', value: 'purple', color: '#a855f7', class: 'bg-purple-500' },
-  { name: 'Fucsia', value: 'fuchsia', color: '#d946ef', class: 'bg-fuchsia-500' },
+  { name: 'Naranja', value: 'orange', color: '#f97316', class: 'bg-orange-500' },
   { name: 'Rosa', value: 'pink', color: '#ec4899', class: 'bg-pink-500' },
-  { name: 'Rose', value: 'rose', color: '#f43f5e', class: 'bg-rose-500' }
+  { name: 'Esmeralda', value: 'emerald', color: '#10b981', class: 'bg-emerald-500' },
+  { name: 'Índigo', value: 'indigo', color: '#6366f1', class: 'bg-indigo-500' }
 ];
 
 export default function Settings() {
   const { user } = useAuth();
+  const { theme, setTheme, actualTheme, themeColor, setThemeColor } = useTheme();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
     role: user?.role || 'student'
   });
-  const [selectedThemeColor, setSelectedThemeColor] = useState('blue');
   const [previewMode, setPreviewMode] = useState(false);
 
   if (!user) {
@@ -65,19 +52,24 @@ export default function Settings() {
   };
 
   const handleSaveTheme = () => {
-    // Here you would apply the theme color
-    // For now, we'll just show a toast
     toast({
       title: "Tema actualizado",
-      description: `Color ${themeColors.find(c => c.value === selectedThemeColor)?.name} aplicado.`,
+      description: `Color ${themeColors.find(c => c.value === themeColor)?.name} aplicado exitosamente.`,
     });
   };
 
   const handlePreviewColor = (colorValue: string) => {
     if (previewMode) {
-      setSelectedThemeColor(colorValue);
-      // Here you could temporarily apply the color to see preview
+      setThemeColor(colorValue);
     }
+  };
+
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
+    setTheme(newTheme);
+    toast({
+      title: "Modo de tema actualizado",
+      description: `Cambiado a modo ${newTheme === 'light' ? 'claro' : newTheme === 'dark' ? 'oscuro' : 'sistema'}.`,
+    });
   };
 
   return (
@@ -223,23 +215,41 @@ export default function Settings() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Theme Mode (Future Enhancement) */}
+              {/* Theme Mode */}
               <div className="space-y-3">
                 <Label>Modo de Tema</Label>
                 <div className="flex gap-3">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Button
+                    variant={theme === 'light' ? 'default' : 'outline'}
+                    size="sm"
+                    className="flex items-center gap-2"
+                    onClick={() => handleThemeChange('light')}
+                  >
                     <Sun className="h-4 w-4" />
                     Claro
                   </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Button
+                    variant={theme === 'dark' ? 'default' : 'outline'}
+                    size="sm"
+                    className="flex items-center gap-2"
+                    onClick={() => handleThemeChange('dark')}
+                  >
                     <Moon className="h-4 w-4" />
                     Oscuro
                   </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Button
+                    variant={theme === 'system' ? 'default' : 'outline'}
+                    size="sm"
+                    className="flex items-center gap-2"
+                    onClick={() => handleThemeChange('system')}
+                  >
                     <Monitor className="h-4 w-4" />
                     Sistema
                   </Button>
                 </div>
+                <p className="text-xs text-muted-foreground">
+                  Modo actual: <strong>{actualTheme === 'dark' ? 'Oscuro' : 'Claro'}</strong>
+                </p>
               </div>
 
               <Separator />
@@ -266,7 +276,7 @@ export default function Settings() {
                     <button
                       key={color.value}
                       onClick={() => {
-                        setSelectedThemeColor(color.value);
+                        setThemeColor(color.value);
                         if (previewMode) {
                           handlePreviewColor(color.value);
                         }
@@ -274,11 +284,11 @@ export default function Settings() {
                       className={`
                         group relative h-10 w-10 rounded-lg transition-all hover:scale-110 focus:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
                         ${color.class}
-                        ${selectedThemeColor === color.value ? 'ring-2 ring-foreground ring-offset-2 scale-110' : ''}
+                        ${themeColor === color.value ? 'ring-2 ring-foreground ring-offset-2 scale-110' : ''}
                       `}
                       title={color.name}
                     >
-                      {selectedThemeColor === color.value && (
+                      {themeColor === color.value && (
                         <div className="absolute inset-0 rounded-lg bg-white/20 flex items-center justify-center">
                           <div className="h-3 w-3 rounded-full bg-white" />
                         </div>
@@ -289,7 +299,7 @@ export default function Settings() {
                 </div>
 
                 <div className="text-sm text-muted-foreground">
-                  Color seleccionado: <strong>{themeColors.find(c => c.value === selectedThemeColor)?.name}</strong>
+                  Color seleccionado: <strong>{themeColors.find(c => c.value === themeColor)?.name}</strong>
                   {previewMode && (
                     <span className="ml-2 text-primary">• Vista previa activada</span>
                   )}
@@ -301,7 +311,7 @@ export default function Settings() {
                   <Palette className="h-4 w-4 mr-2" />
                   Aplicar Tema
                 </Button>
-                <Button variant="outline" onClick={() => setSelectedThemeColor('blue')}>
+                <Button variant="outline" onClick={() => setThemeColor('blue')}>
                   Restaurar por Defecto
                 </Button>
               </div>
@@ -337,14 +347,20 @@ export default function Settings() {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Tema:</span>
                   <div className="flex items-center gap-2">
-                    <div 
+                    <div
                       className="h-3 w-3 rounded-full"
-                      style={{ backgroundColor: themeColors.find(c => c.value === selectedThemeColor)?.color }}
+                      style={{ backgroundColor: themeColors.find(c => c.value === themeColor)?.color }}
                     />
                     <span className="font-medium text-xs">
-                      {themeColors.find(c => c.value === selectedThemeColor)?.name}
+                      {themeColors.find(c => c.value === themeColor)?.name}
                     </span>
                   </div>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Modo:</span>
+                  <span className="font-medium text-xs capitalize">
+                    {theme === 'system' ? `Sistema (${actualTheme})` : theme === 'light' ? 'Claro' : 'Oscuro'}
+                  </span>
                 </div>
               </div>
             </CardContent>
