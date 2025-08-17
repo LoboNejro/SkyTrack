@@ -259,11 +259,12 @@ export default function Classes() {
                               Are you sure you want to delete "{classItem.name}
                               "? This action cannot be undone.
                               {(stats.totalTasks > 0 ||
-                                stats.totalNotes > 0) && (
+                                stats.totalNotes > 0 ||
+                                stats.totalEvents > 0) && (
                                 <span className="block mt-2 text-destructive">
                                   Warning: This will also remove{" "}
-                                  {stats.totalTasks} tasks and{" "}
-                                  {stats.totalNotes} notes associated with this
+                                  {stats.totalTasks} tasks, {stats.totalNotes} notes
+                                  {stats.totalEvents > 0 && `, and ${stats.totalEvents} events`} associated with this
                                   class.
                                 </span>
                               )}
@@ -283,7 +284,7 @@ export default function Classes() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-3 gap-4 text-center">
+                  <div className="grid grid-cols-4 gap-3 text-center">
                     <div className="space-y-1">
                       <div className="flex items-center justify-center gap-1">
                         <CheckSquare className="h-3 w-3 text-muted-foreground" />
@@ -301,6 +302,15 @@ export default function Classes() {
                         </span>
                       </div>
                       <p className="text-xs text-muted-foreground">Notes</p>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-center gap-1">
+                        <Calendar className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-sm font-medium">
+                          {stats.totalEvents}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Events</p>
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-center gap-1">
