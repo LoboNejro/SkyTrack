@@ -92,6 +92,7 @@ export default function Classes() {
   const getClassStats = (classId: string) => {
     const classTasks = tasks.filter((task) => task.classID === classId);
     const classNotes = notes.filter((note) => note.classID === classId);
+    const classEvents = events.filter((event) => event.classID === classId);
     const completedTasks = classTasks.filter(
       (task) => task.status === "completed",
     ).length;
@@ -100,6 +101,7 @@ export default function Classes() {
       totalTasks: classTasks.length,
       completedTasks,
       totalNotes: classNotes.length,
+      totalEvents: classEvents.length,
     };
   };
 
