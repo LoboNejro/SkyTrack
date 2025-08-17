@@ -20,6 +20,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Classes from "./pages/Classes";
+import ClassDetail from "./pages/ClassDetail";
 import Tasks from "./pages/Tasks";
 import Notes from "./pages/Notes";
 import Contacts from "./pages/Contacts";
