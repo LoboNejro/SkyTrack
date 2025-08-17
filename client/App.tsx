@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // Context Providers
 import { AuthProvider } from "./contexts/AuthContext";
 import { DataProvider } from "./contexts/DataContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 // Components
 import ProtectedRoute from "./components/ProtectedRoute";
