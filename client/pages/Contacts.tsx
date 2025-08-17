@@ -33,6 +33,7 @@ export default function Contacts() {
     name: '',
     email: '',
     phone: '',
+    photoURL: '',
     type: 'friend' as Contact['type']
   });
   
