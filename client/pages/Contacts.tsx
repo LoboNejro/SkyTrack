@@ -264,6 +264,19 @@ export default function Contacts() {
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="photoURL">Foto (URL) (Opcional)</Label>
+                  <Input
+                    id="photoURL"
+                    type="url"
+                    placeholder="https://ejemplo.com/foto.jpg"
+                    value={formData.photoURL}
+                    onChange={(e) => setFormData({ ...formData, photoURL: e.target.value })}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Puedes pegar una URL de una imagen desde internet
+                  </p>
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="type">Tipo de Contacto</Label>
                   <Select 
                     value={formData.type} 
