@@ -275,9 +275,10 @@ export default function Dashboard() {
               </div>
             ) : (
               upcomingEvents.map((event) => (
-                <div
+                <Link
                   key={event.id}
-                  className="flex items-center gap-3 p-3 rounded-lg border"
+                  to="/dashboard/calendar"
+                  className="flex items-center gap-3 p-3 rounded-lg border hover:bg-accent transition-colors"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="font-medium truncate">{event.title}</p>
@@ -288,7 +289,7 @@ export default function Dashboard() {
                       {getDateLabel(event.date)}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))
             )}
             {upcomingEvents.length > 0 && (
