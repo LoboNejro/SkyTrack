@@ -56,6 +56,7 @@ const App = () => (
                 <Route path="classes/:classId" element={<ClassDetail />} />
                 <Route path="tasks" element={<Tasks />} />
                 <Route path="notes" element={<Notes />} />
+                <Route path="notes/:noteId" element={<NoteDetail />} />
                 <Route path="contacts" element={<Contacts />} />
                 <Route path="calendar" element={<Calendar />} />
               </Route>
