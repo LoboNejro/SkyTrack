@@ -121,6 +121,7 @@ export default function Contacts() {
         <CardHeader className="pb-3">
           <div className="flex items-start gap-3">
             <Avatar className="h-12 w-12">
+              <AvatarImage src={contact.photoURL} alt={contact.name} />
               <AvatarFallback className={`${typeConfig.color} text-white`}>
                 {getInitials(contact.name)}
               </AvatarFallback>
