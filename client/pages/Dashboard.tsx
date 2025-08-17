@@ -328,9 +328,10 @@ export default function Dashboard() {
                 const className = classes.find((c) => c.id === note.classID);
 
                 return (
-                  <div
+                  <Link
                     key={note.id}
-                    className="flex items-center gap-3 p-3 rounded-lg border"
+                    to="/dashboard/notes"
+                    className="flex items-center gap-3 p-3 rounded-lg border hover:bg-accent transition-colors"
                   >
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">{note.title}</p>
@@ -345,7 +346,7 @@ export default function Dashboard() {
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })
             )}
