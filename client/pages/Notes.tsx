@@ -88,10 +88,6 @@ export default function Notes() {
     setShowAddDialog(true);
   };
   
-  const handleView = (note: Note) => {
-    setViewingNote(note);
-    setShowDetailDialog(true);
-  };
   
   const handleDelete = (noteId: string) => {
     removeNote(noteId);
