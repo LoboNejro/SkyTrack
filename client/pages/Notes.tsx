@@ -23,9 +23,7 @@ import { Note } from '../contexts/DataContext';
 export default function Notes() {
   const { classes, notes, addNote, updateNote, removeNote } = useData();
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [editingNote, setEditingNote] = useState<string | null>(null);
-  const [viewingNote, setViewingNote] = useState<Note | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClass, setSelectedClass] = useState<string>('all');
   const [formData, setFormData] = useState({
