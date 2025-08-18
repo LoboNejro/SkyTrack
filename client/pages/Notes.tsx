@@ -144,16 +144,15 @@ export default function Notes() {
               </div>
             </Link>
             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleView(note);
-                }}
-              >
-                <Eye className="h-4 w-4" />
-              </Button>
+              <Link to={`/dashboard/notes/${note.id}`}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  title="Ver detalle"
+                >
+                  <Eye className="h-4 w-4" />
+                </Button>
+              </Link>
               <Button
                 variant="ghost"
                 size="sm"
