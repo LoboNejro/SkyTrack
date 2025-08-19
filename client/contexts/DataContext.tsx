@@ -248,7 +248,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
   // Similar functions for notes, contacts, and events
   const addNote = (noteData: Omit<Note, "id" | "ownerUID" | "createdAt">) => {
-    if (!user) return;
+    console.log('addNote called with:', noteData);
+    if (!user) {
+      console.error('No user found when trying to add note');
+      return;
+    }
 
     const newNote: Note = {
       ...noteData,
@@ -257,9 +261,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       createdAt: new Date(),
     };
 
+    console.log('Creating new note:', newNote);
     const updatedNotes = [...notes, newNote];
     setNotes(updatedNotes);
     saveData("notes", updatedNotes);
+    console.log('Note added successfully, total notes:', updatedNotes.length);
   };
 
   const updateNote = (id: string, updates: Partial<Note>) => {
