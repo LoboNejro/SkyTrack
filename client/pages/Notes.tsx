@@ -216,11 +216,15 @@ export default function Notes() {
           </p>
         </div>
         <Dialog open={showAddDialog} onOpenChange={(open) => {
+          console.log('Dialog state changing to:', open);
           setShowAddDialog(open);
           if (!open) resetForm();
         }}>
           <DialogTrigger asChild>
-            <Button>
+            <Button onClick={() => {
+              console.log('Nueva Nota button clicked');
+              setShowAddDialog(true);
+            }}>
               <Plus className="mr-2 h-4 w-4" />
               Nueva Nota
             </Button>
