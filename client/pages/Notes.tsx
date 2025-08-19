@@ -55,26 +55,30 @@ export default function Notes() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim()) return;
-    
-    if (editingNote) {
-      updateNote(editingNote, {
-        title: formData.title,
-        content: formData.content,
-        classID: formData.classID,
-        attachments: formData.attachments
-      });
-      setEditingNote(null);
-    } else {
-      addNote({
-        title: formData.title,
-        content: formData.content,
-        classID: formData.classID,
-        attachments: formData.attachments
-      });
+
+    try {
+      if (editingNote) {
+        updateNote(editingNote, {
+          title: formData.title,
+          content: formData.content,
+          classID: formData.classID,
+          attachments: formData.attachments
+        });
+        setEditingNote(null);
+      } else {
+        addNote({
+          title: formData.title,
+          content: formData.content,
+          classID: formData.classID,
+          attachments: formData.attachments
+        });
+      }
+
+      resetForm();
+      setShowAddDialog(false);
+    } catch (error) {
+      console.error('Error al guardar la nota:', error);
     }
-    
-    resetForm();
-    setShowAddDialog(false);
   };
   
   const handleEdit = (note: Note) => {
