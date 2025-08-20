@@ -29,7 +29,7 @@ export default function Notes() {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    classID: '',
+    classID: 'none',
     attachments: [] as string[]
   });
   
@@ -59,17 +59,17 @@ export default function Notes() {
     try {
       if (editingNote) {
         updateNote(editingNote, {
-          title: formData.title,
-          content: formData.content,
-          classID: formData.classID,
-          attachments: formData.attachments
-        });
+        title: formData.title,
+        content: formData.content,
+        classID: formData.classID === 'none' ? '' : formData.classID,
+        attachments: formData.attachments
+      });
         setEditingNote(null);
       } else {
         addNote({
           title: formData.title,
           content: formData.content,
-          classID: formData.classID,
+          classID: formData.classID === 'none' ? '' : formData.classID,
           attachments: formData.attachments
         });
       }
@@ -85,7 +85,7 @@ export default function Notes() {
     setFormData({
       title: note.title,
       content: note.content,
-      classID: note.classID,
+      classID: note.classID || 'none',
       attachments: note.attachments
     });
     setEditingNote(note.id);
@@ -101,7 +101,7 @@ export default function Notes() {
     setFormData({
       title: '',
       content: '',
-      classID: '',
+      classID: 'none',
       attachments: []
     });
     setEditingNote(null);
@@ -271,7 +271,7 @@ export default function Notes() {
                       <SelectValue placeholder="Seleccionar clase" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Sin clase asociada</SelectItem>
+                      <SelectItem value="none">Sin clase asociada</SelectItem>
                       {classes.map((classItem) => (
                         <SelectItem key={classItem.id} value={classItem.id}>
                           <div className="flex items-center gap-2">
