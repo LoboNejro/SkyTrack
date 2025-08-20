@@ -56,29 +56,25 @@ export default function Notes() {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim()) return;
 
-    try {
-      if (editingNote) {
-        updateNote(editingNote, {
+    if (editingNote) {
+      updateNote(editingNote, {
         title: formData.title,
         content: formData.content,
         classID: formData.classID === 'none' ? '' : formData.classID,
         attachments: formData.attachments
       });
-        setEditingNote(null);
-      } else {
-        addNote({
-          title: formData.title,
-          content: formData.content,
-          classID: formData.classID === 'none' ? '' : formData.classID,
-          attachments: formData.attachments
-        });
-      }
-
-      resetForm();
-      setShowAddDialog(false);
-    } catch (error) {
-      console.error('Error al guardar la nota:', error);
+      setEditingNote(null);
+    } else {
+      addNote({
+        title: formData.title,
+        content: formData.content,
+        classID: formData.classID === 'none' ? '' : formData.classID,
+        attachments: formData.attachments
+      });
     }
+
+    resetForm();
+    setShowAddDialog(false);
   };
   
   const handleEdit = (note: Note) => {
