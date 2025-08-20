@@ -1,57 +1,108 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { useData } from '../contexts/DataContext';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Textarea } from '../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { Badge } from '../components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { ScrollArea } from '../components/ui/scroll-area';
-import { 
-  FileText, Plus, Edit, Trash2, Search, Filter, Eye, 
-  BookOpen, Calendar, Paperclip, MoreHorizontal 
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import { Note } from '../contexts/DataContext';
+import React, { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { useData } from "../contexts/DataContext";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components/ui/alert-dialog";
+import { Badge } from "../components/ui/badge";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import { ScrollArea } from "../components/ui/scroll-area";
+import {
+  FileText,
+  Plus,
+  Edit,
+  Trash2,
+  Search,
+  Filter,
+  Eye,
+  BookOpen,
+  Calendar,
+  Paperclip,
+  MoreHorizontal,
+} from "lucide-react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { Note } from "../contexts/DataContext";
 
 export default function Notes() {
   const { classes, notes, addNote, updateNote, removeNote } = useData();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingNote, setEditingNote] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedClass, setSelectedClass] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedClass, setSelectedClass] = useState<string>("all");
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    classID: 'none',
-    attachments: [] as string[]
+    title: "",
+    content: "",
+    classID: "none",
+    attachments: [] as string[],
   });
-  
+
   const filteredNotes = useMemo(() => {
-    return notes.filter(note => {
-      const matchesSearch = note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           note.content.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesClass = selectedClass === 'all' || note.classID === selectedClass;
-      
-      return matchesSearch && matchesClass;
-    }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return notes
+      .filter((note) => {
+        const matchesSearch =
+          note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          note.content.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesClass =
+          selectedClass === "all" || note.classID === selectedClass;
+
+        return matchesSearch && matchesClass;
+      })
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
   }, [notes, searchQuery, selectedClass]);
-  
+
   const notesByClass = useMemo(() => {
     const grouped: { [key: string]: Note[] } = {};
-    classes.forEach(cls => {
-      grouped[cls.id] = filteredNotes.filter(note => note.classID === cls.id);
+    classes.forEach((cls) => {
+      grouped[cls.id] = filteredNotes.filter((note) => note.classID === cls.id);
     });
-    grouped['unassigned'] = filteredNotes.filter(note => !note.classID);
+    grouped["unassigned"] = filteredNotes.filter((note) => !note.classID);
     return grouped;
   }, [filteredNotes, classes]);
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim()) return;
@@ -60,65 +111,61 @@ export default function Notes() {
       updateNote(editingNote, {
         title: formData.title,
         content: formData.content,
-        classID: formData.classID === 'none' ? '' : formData.classID,
-        attachments: formData.attachments
+        classID: formData.classID === "none" ? "" : formData.classID,
+        attachments: formData.attachments,
       });
       setEditingNote(null);
     } else {
       addNote({
         title: formData.title,
         content: formData.content,
-        classID: formData.classID === 'none' ? '' : formData.classID,
-        attachments: formData.attachments
+        classID: formData.classID === "none" ? "" : formData.classID,
+        attachments: formData.attachments,
       });
     }
 
     resetForm();
     setShowAddDialog(false);
   };
-  
+
   const handleEdit = (note: Note) => {
     setFormData({
       title: note.title,
       content: note.content,
-      classID: note.classID || 'none',
-      attachments: note.attachments
+      classID: note.classID || "none",
+      attachments: note.attachments,
     });
     setEditingNote(note.id);
     setShowAddDialog(true);
   };
-  
-  
+
   const handleDelete = (noteId: string) => {
     removeNote(noteId);
   };
-  
+
   const resetForm = () => {
     setFormData({
-      title: '',
-      content: '',
-      classID: 'none',
-      attachments: []
+      title: "",
+      content: "",
+      classID: "none",
+      attachments: [],
     });
     setEditingNote(null);
   };
-  
+
   const truncateContent = (content: string, maxLength: number = 150) => {
     if (content.length <= maxLength) return content;
-    return content.slice(0, maxLength) + '...';
+    return content.slice(0, maxLength) + "...";
   };
-  
+
   const NoteCard = ({ note }: { note: Note }) => {
-    const classItem = classes.find(c => c.id === note.classID);
-    
+    const classItem = classes.find((c) => c.id === note.classID);
+
     return (
       <Card className="hover:shadow-md transition-shadow cursor-pointer group">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
-            <Link
-              to={`/dashboard/notes/${note.id}`}
-              className="flex-1 min-w-0"
-            >
+            <Link to={`/dashboard/notes/${note.id}`} className="flex-1 min-w-0">
               <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
                 {note.title}
               </CardTitle>
@@ -133,7 +180,7 @@ export default function Notes() {
                   </Badge>
                 )}
                 <span className="text-xs text-muted-foreground">
-                  {format(note.createdAt, 'MMM d, yyyy', { locale: es })}
+                  {format(note.createdAt, "MMM d, yyyy", { locale: es })}
                 </span>
                 {note.attachments.length > 0 && (
                   <Badge variant="outline" className="text-xs">
@@ -145,11 +192,7 @@ export default function Notes() {
             </Link>
             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <Link to={`/dashboard/notes/${note.id}`}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  title="Ver detalle"
-                >
+                <Button variant="ghost" size="sm" title="Ver detalle">
                   <Eye className="h-4 w-4" />
                 </Button>
               </Link>
@@ -165,8 +208,8 @@ export default function Notes() {
               </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="sm"
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -177,7 +220,8 @@ export default function Notes() {
                   <AlertDialogHeader>
                     <AlertDialogTitle>Eliminar Nota</AlertDialogTitle>
                     <AlertDialogDescription>
-                      ¿Estás seguro de que quieres eliminar "{note.title}"? Esta acción no se puede deshacer.
+                      ¿Estás seguro de que quieres eliminar "{note.title}"? Esta
+                      acción no se puede deshacer.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -211,10 +255,13 @@ export default function Notes() {
             Crea y organiza tus notas de estudio.
           </p>
         </div>
-        <Dialog open={showAddDialog} onOpenChange={(open) => {
-          setShowAddDialog(open);
-          if (!open) resetForm();
-        }}>
+        <Dialog
+          open={showAddDialog}
+          onOpenChange={(open) => {
+            setShowAddDialog(open);
+            if (!open) resetForm();
+          }}
+        >
           <DialogTrigger asChild>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
@@ -224,9 +271,13 @@ export default function Notes() {
           <DialogContent className="sm:max-w-[600px] max-h-[80vh]">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
-                <DialogTitle>{editingNote ? 'Editar Nota' : 'Nueva Nota'}</DialogTitle>
+                <DialogTitle>
+                  {editingNote ? "Editar Nota" : "Nueva Nota"}
+                </DialogTitle>
                 <DialogDescription>
-                  {editingNote ? 'Actualiza el contenido de tu nota.' : 'Crea una nueva nota para tus estudios.'}
+                  {editingNote
+                    ? "Actualiza el contenido de tu nota."
+                    : "Crea una nueva nota para tus estudios."}
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -236,15 +287,19 @@ export default function Notes() {
                     id="title"
                     placeholder="ej. Apuntes de Matemáticas - Capítulo 5"
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="class">Clase (Opcional)</Label>
-                  <Select 
-                    value={formData.classID} 
-                    onValueChange={(value) => setFormData({ ...formData, classID: value })}
+                  <Select
+                    value={formData.classID}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, classID: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar clase" />
@@ -254,8 +309,8 @@ export default function Notes() {
                       {classes.map((classItem) => (
                         <SelectItem key={classItem.id} value={classItem.id}>
                           <div className="flex items-center gap-2">
-                            <div 
-                              className="h-3 w-3 rounded-full" 
+                            <div
+                              className="h-3 w-3 rounded-full"
                               style={{ backgroundColor: classItem.color }}
                             />
                             {classItem.name}
@@ -271,7 +326,9 @@ export default function Notes() {
                     id="content"
                     placeholder="Escribe el contenido de tu nota aquí..."
                     value={formData.content}
-                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, content: e.target.value })
+                    }
                     rows={8}
                     className="resize-none"
                     required
@@ -279,19 +336,22 @@ export default function Notes() {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setShowAddDialog(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowAddDialog(false)}
+                >
                   Cancelar
                 </Button>
                 <Button type="submit">
-                  {editingNote ? 'Actualizar Nota' : 'Guardar Nota'}
+                  {editingNote ? "Actualizar Nota" : "Guardar Nota"}
                 </Button>
               </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
       </div>
-      
-      
+
       {/* Filters */}
       <Card>
         <CardHeader className="pb-3">
@@ -326,8 +386,8 @@ export default function Notes() {
                   {classes.map((classItem) => (
                     <SelectItem key={classItem.id} value={classItem.id}>
                       <div className="flex items-center gap-2">
-                        <div 
-                          className="h-3 w-3 rounded-full" 
+                        <div
+                          className="h-3 w-3 rounded-full"
                           style={{ backgroundColor: classItem.color }}
                         />
                         {classItem.name}
@@ -371,9 +431,13 @@ export default function Notes() {
               </Badge>
             </TabsTrigger>
             {classes.slice(0, 4).map((classItem) => (
-              <TabsTrigger key={classItem.id} value={classItem.id} className="flex items-center gap-2">
-                <div 
-                  className="h-2 w-2 rounded-full" 
+              <TabsTrigger
+                key={classItem.id}
+                value={classItem.id}
+                className="flex items-center gap-2"
+              >
+                <div
+                  className="h-2 w-2 rounded-full"
                   style={{ backgroundColor: classItem.color }}
                 />
                 <span className="truncate">{classItem.name}</span>
@@ -389,7 +453,7 @@ export default function Notes() {
               </TabsTrigger>
             )}
           </TabsList>
-          
+
           <TabsContent value="all" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {filteredNotes.map((note) => (
@@ -397,9 +461,13 @@ export default function Notes() {
               ))}
             </div>
           </TabsContent>
-          
+
           {classes.map((classItem) => (
-            <TabsContent key={classItem.id} value={classItem.id} className="space-y-4">
+            <TabsContent
+              key={classItem.id}
+              value={classItem.id}
+              className="space-y-4"
+            >
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {notesByClass[classItem.id]?.map((note) => (
                   <NoteCard key={note.id} note={note} />
@@ -408,7 +476,9 @@ export default function Notes() {
               {notesByClass[classItem.id]?.length === 0 && (
                 <div className="text-center py-8">
                   <FileText className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                  <p className="text-muted-foreground">No hay notas para {classItem.name}</p>
+                  <p className="text-muted-foreground">
+                    No hay notas para {classItem.name}
+                  </p>
                 </div>
               )}
             </TabsContent>
