@@ -215,29 +215,12 @@ export default function Notes() {
             Crea y organiza tus notas de estudio.
           </p>
         </div>
-        <Button onClick={() => {
-          console.log('Nueva Nota button clicked - testing mode');
-          addNote({
-            title: 'Nota de Prueba ' + Date.now(),
-            content: 'Esta es una nota de prueba creada para debuggear el problema.',
-            classID: '',
-            attachments: []
-          });
-        }} className="mr-2">
-          <Plus className="mr-2 h-4 w-4" />
-          Test Crear Nota
-        </Button>
-
         <Dialog open={showAddDialog} onOpenChange={(open) => {
-          console.log('Dialog state changing to:', open);
           setShowAddDialog(open);
           if (!open) resetForm();
         }}>
           <DialogTrigger asChild>
-            <Button onClick={() => {
-              console.log('Nueva Nota button clicked');
-              setShowAddDialog(true);
-            }}>
+            <Button>
               <Plus className="mr-2 h-4 w-4" />
               Nueva Nota
             </Button>
