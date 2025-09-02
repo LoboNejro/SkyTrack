@@ -98,69 +98,6 @@ function MockAuthProvider({ children }: { children: React.ReactNode }) {
 
       setUser(mockUser);
       localStorage.setItem("skytrack_user", JSON.stringify(mockUser));
-
-      const existingClasses = localStorage.getItem(
-        `skytrack_classes_${mockUser.uid}`,
-      );
-      if (!existingClasses) {
-        const sampleClasses = [
-          {
-            id: "class1",
-            ownerUID: mockUser.uid,
-            name: "Matemáticas",
-            color: "#3b82f6",
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: "class2",
-            ownerUID: mockUser.uid,
-            name: "Historia",
-            color: "#10b981",
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        localStorage.setItem(
-          `skytrack_classes_${mockUser.uid}`,
-          JSON.stringify(sampleClasses),
-        );
-
-        const sampleNotes = [
-          {
-            id: "note1",
-            ownerUID: mockUser.uid,
-            classID: "class1",
-            title: "Nota de Matemáticas",
-            content:
-              "Esta es una nota de ejemplo sobre álgebra.\n\nPuedes hacer click en esta nota para ver el detalle completo.\n\nLas notas se pueden editar y eliminar usando los botones que aparecen al pasar el mouse.",
-            attachments: [],
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: "note2",
-            ownerUID: mockUser.uid,
-            classID: "class2",
-            title: "Apuntes de Historia",
-            content:
-              "Notas sobre la Revolución Industrial.\n\n- Comenzó en Inglaterra en el siglo XVIII\n- Cambió la forma de producir bienes\n- Tuvo gran impacto social y económico",
-            attachments: [],
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: "note3",
-            ownerUID: mockUser.uid,
-            classID: "",
-            title: "Nota Personal",
-            content:
-              "Esta es una nota personal sin clase asociada.\n\nPuedes crear notas sin asociarlas a ninguna clase específica.",
-            attachments: [],
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        localStorage.setItem(
-          `skytrack_notes_${mockUser.uid}`,
-          JSON.stringify(sampleNotes),
-        );
-      }
     } catch (error) {
       throw new Error("Login failed");
     } finally {
