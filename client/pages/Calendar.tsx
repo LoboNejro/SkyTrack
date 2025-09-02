@@ -28,7 +28,7 @@ export default function Calendar() {
     description: '',
     date: '',
     time: '',
-    classID: ''
+    classID: 'none'
   });
   
   // Calculate calendar grid
@@ -72,7 +72,7 @@ export default function Calendar() {
         title: formData.title,
         description: formData.description,
         date: eventDate,
-        classID: formData.classID
+        classID: formData.classID === 'none' ? '' : formData.classID
       });
       setEditingEvent(null);
     } else {
@@ -80,7 +80,7 @@ export default function Calendar() {
         title: formData.title,
         description: formData.description,
         date: eventDate,
-        classID: formData.classID
+        classID: formData.classID === 'none' ? '' : formData.classID
       });
     }
     
@@ -95,7 +95,7 @@ export default function Calendar() {
       description: event.description,
       date: format(eventDate, 'yyyy-MM-dd'),
       time: format(eventDate, 'HH:mm'),
-      classID: event.classID || ''
+      classID: event.classID || 'none'
     });
     setEditingEvent(event.id);
     setShowAddDialog(true);
@@ -111,7 +111,7 @@ export default function Calendar() {
       description: '',
       date: '',
       time: '',
-      classID: ''
+      classID: 'none'
     });
     setEditingEvent(null);
     setSelectedDate(null);
@@ -204,7 +204,7 @@ export default function Calendar() {
                       <SelectValue placeholder="Seleccionar clase" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Sin clase asociada</SelectItem>
+                      <SelectItem value="none">Sin clase asociada</SelectItem>
                       {classes.map((classItem) => (
                         <SelectItem key={classItem.id} value={classItem.id}>
                           <div className="flex items-center gap-2">
