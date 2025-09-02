@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { SignIn, SignUp } from "@clerk/clerk-react";
 
 // Context Providers
 import { AuthProvider } from "./contexts/AuthContext";
@@ -31,6 +32,7 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+const clerkEnabled = !!(import.meta as any).env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -42,9 +44,16 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/" element={<Navigate to={clerkEnabled ? "/sign-in" : "/login"} replace />} />
+              <Route path="/login" element={clerkEnabled ? <Navigate to="/sign-in" replace /> : <Login />} />
+              <Route path="/register" element={clerkEnabled ? <Navigate to="/sign-up" replace /> : <Register />} />
+
+              {clerkEnabled && (
+                <>
+                  <Route path="/sign-in" element={<div className="min-h-screen flex items-center justify-center p-4"><SignIn routing="path" path="/sign-in" /></div>} />
+                  <Route path="/sign-up" element={<div className="min-h-screen flex items-center justify-center p-4"><SignUp routing="path" path="/sign-up" /></div>} />
+                </>
+              )}
 
               <Route
                 path="/dashboard"
