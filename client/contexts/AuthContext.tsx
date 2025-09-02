@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { ClerkProvider, useClerk, useUser } from "@clerk/clerk-react";
+import { ID } from "appwrite";
+import { account, appwriteReady } from "../lib/appwrite";
 
 export interface User {
   uid: string;
