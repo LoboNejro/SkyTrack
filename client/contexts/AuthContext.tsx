@@ -34,42 +34,84 @@ export function useAuth() {
   return context;
 }
 
-function ClerkAuthProvider({ children }: { children: React.ReactNode }) {
-  const { isLoaded, isSignedIn, user } = useUser();
-  const { signOut } = useClerk();
+function AppwriteAuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const mappedUser: User | null =
-    isSignedIn && user
-      ? {
-          uid: user.id,
-          name:
-            user.fullName ||
-            user.username ||
-            user.primaryEmailAddress?.emailAddress ||
-            "User",
-          email: user.primaryEmailAddress?.emailAddress || "",
-          photoURL: user.imageUrl,
-          role: "student",
+  useEffect(() => {
+    const init = async () => {
+      try {
+        if (appwriteReady) {
+          const me = await account.get();
+          setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role: "student" });
+        } else {
+          const savedUser = localStorage.getItem("skytrack_user");
+          if (savedUser) setUser(JSON.parse(savedUser));
         }
-      : null;
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    init();
+  }, []);
 
-  const value: AuthContextType = {
-    user: mappedUser,
-    loading: !isLoaded,
-    login: async () => {
-      window.location.assign("/sign-in");
-    },
-    register: async () => {
-      window.location.assign("/sign-up");
-    },
-    loginWithGoogle: async () => {
-      window.location.assign("/sign-in");
-    },
-    logout: () => {
-      signOut();
-    },
-  } as AuthContextType;
+  const login = async (email: string, password: string) => {
+    setLoading(true);
+    try {
+      if (appwriteReady) {
+        await account.createEmailSession(email, password);
+        const me = await account.get();
+        setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role: "student" });
+      } else {
+        const mockUser: User = { uid: crypto.randomUUID(), name: email.split("@")[0], email, role: "student" };
+        setUser(mockUser);
+        localStorage.setItem("skytrack_user", JSON.stringify(mockUser));
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const register = async (
+    email: string,
+    password: string,
+    name: string,
+    role: User["role"],
+  ) => {
+    setLoading(true);
+    try {
+      if (appwriteReady) {
+        await account.create(ID.unique(), email, password, name);
+        await account.createEmailSession(email, password);
+        const me = await account.get();
+        setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role });
+      } else {
+        const newUser: User = { uid: crypto.randomUUID(), name, email, role };
+        setUser(newUser);
+        localStorage.setItem("skytrack_user", JSON.stringify(newUser));
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    if (!appwriteReady) return;
+    const origin = window.location.origin;
+    const success = `${origin}/dashboard`;
+    const failure = `${origin}/login`;
+    window.location.href = account.createOAuth2Session("google", success, failure).href ?? `/login`;
+  };
+
+  const logout = () => {
+    if (appwriteReady) account.deleteSession("current");
+    setUser(null);
+    localStorage.removeItem("skytrack_user");
+  };
+
+  const value: AuthContextType = { user, login, register, loginWithGoogle, logout, loading };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
@@ -173,17 +215,5 @@ function MockAuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as
-    | string
-    | undefined;
-
-  if (clerkPublishableKey) {
-    return (
-      <ClerkProvider publishableKey={clerkPublishableKey}>
-        <ClerkAuthProvider>{children}</ClerkAuthProvider>
-      </ClerkProvider>
-    );
-  }
-
-  return <MockAuthProvider>{children}</MockAuthProvider>;
+  return <AppwriteAuthProvider>{children}</AppwriteAuthProvider>;
 }
