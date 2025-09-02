@@ -1,23 +1,55 @@
-import React, { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useData } from '../contexts/DataContext';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
-import { ScrollArea } from '../components/ui/scroll-area';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Textarea } from '../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { 
-  ArrowLeft, FileText, Edit, Trash2, Clock, BookOpen, 
-  Paperclip, Share, Copy, Download, Eye, Calendar,
-  MessageSquare, Star, Archive
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import { Note } from '../contexts/DataContext';
+import React, { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useData } from "../contexts/DataContext";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { ScrollArea } from "../components/ui/scroll-area";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import {
+  ArrowLeft,
+  FileText,
+  Edit,
+  Trash2,
+  Clock,
+  BookOpen,
+  Paperclip,
+  Share,
+  Copy,
+  Download,
+  Eye,
+  Calendar,
+  MessageSquare,
+  Star,
+  Archive,
+} from "lucide-react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { Note } from "../contexts/DataContext";
 
 export default function NoteDetail() {
   const { noteId } = useParams<{ noteId: string }>();
@@ -25,19 +57,23 @@ export default function NoteDetail() {
   const { notes, classes, updateNote, removeNote } = useData();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    classID: 'none'
+    title: "",
+    content: "",
+    classID: "none",
   });
-  
-  const note = notes.find(n => n.id === noteId);
-  const classItem = note ? classes.find(c => c.id === note.classID) : null;
-  
+
+  const note = notes.find((n) => n.id === noteId);
+  const classItem = note ? classes.find((c) => c.id === note.classID) : null;
+
   if (!note) {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" onClick={() => navigate('/dashboard/notes')}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/dashboard/notes")}
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver a Notas
           </Button>
@@ -60,7 +96,7 @@ export default function NoteDetail() {
     setFormData({
       title: note.title,
       content: note.content,
-      classID: note.classID || 'none'
+      classID: note.classID || "none",
     });
     setShowEditDialog(true);
   };
@@ -68,20 +104,20 @@ export default function NoteDetail() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim()) return;
-    
+
     updateNote(note.id, {
       title: formData.title,
       content: formData.content,
-      classID: formData.classID === 'none' ? '' : formData.classID
+      classID: formData.classID === "none" ? "" : formData.classID,
     });
-    
+
     setShowEditDialog(false);
     // Update the local note reference would happen via context
   };
 
   const handleDelete = () => {
     removeNote(note.id);
-    navigate('/dashboard/notes');
+    navigate("/dashboard/notes");
   };
 
   const handleCopyContent = () => {
@@ -93,14 +129,16 @@ export default function NoteDetail() {
     if (navigator.share) {
       navigator.share({
         title: note.title,
-        text: note.content
+        text: note.content,
       });
     } else {
       handleCopyContent();
     }
   };
 
-  const wordCount = note.content.split(/\s+/).filter(word => word.length > 0).length;
+  const wordCount = note.content
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
   const charCount = note.content.length;
   const readingTime = Math.ceil(wordCount / 200); // Average reading speed
 
@@ -108,7 +146,11 @@ export default function NoteDetail() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="sm" onClick={() => navigate('/dashboard/notes')}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate("/dashboard/notes")}
+        >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Volver a Notas
         </Button>
@@ -123,15 +165,22 @@ export default function NoteDetail() {
                 <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">{note.title}</h1>
+                <h1 className="text-3xl font-bold text-foreground">
+                  {note.title}
+                </h1>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <span>Creada {format(note.createdAt, 'MMM d, yyyy \'a las\' HH:mm', { locale: es })}</span>
+                  <span>
+                    Creada{" "}
+                    {format(note.createdAt, "MMM d, yyyy 'a las' HH:mm", {
+                      locale: es,
+                    })}
+                  </span>
                   {classItem && (
                     <>
                       <span>•</span>
                       <div className="flex items-center gap-1">
-                        <div 
-                          className="h-3 w-3 rounded-full" 
+                        <div
+                          className="h-3 w-3 rounded-full"
                           style={{ backgroundColor: classItem.color }}
                         />
                         <span>{classItem.name}</span>
@@ -141,7 +190,7 @@ export default function NoteDetail() {
                 </div>
               </div>
             </div>
-            
+
             {/* Metadata */}
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
@@ -196,7 +245,7 @@ export default function NoteDetail() {
           )}
           <Badge variant="outline">
             <Calendar className="h-3 w-3 mr-1" />
-            {format(note.createdAt, 'MMM yyyy', { locale: es })}
+            {format(note.createdAt, "MMM yyyy", { locale: es })}
           </Badge>
           {note.attachments.length > 0 && (
             <Badge variant="outline">
@@ -238,13 +287,18 @@ export default function NoteDetail() {
           <CardContent>
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {note.attachments.map((attachment, index) => (
-                <div key={index} className="flex items-center gap-3 p-3 rounded-lg border">
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-3 rounded-lg border"
+                >
                   <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
                     <Paperclip className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium truncate">{attachment}</p>
-                    <p className="text-xs text-muted-foreground">Archivo adjunto</p>
+                    <p className="text-xs text-muted-foreground">
+                      Archivo adjunto
+                    </p>
                   </div>
                   <Button variant="ghost" size="sm">
                     <Download className="h-4 w-4" />
@@ -269,11 +323,11 @@ export default function NoteDetail() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link 
+            <Link
               to={`/dashboard/classes/${classItem.id}`}
               className="flex items-center gap-3 p-4 rounded-lg border hover:bg-accent transition-colors"
             >
-              <div 
+              <div
                 className="h-12 w-12 rounded-full flex items-center justify-center text-white font-bold"
                 style={{ backgroundColor: classItem.color }}
               >
@@ -282,7 +336,8 @@ export default function NoteDetail() {
               <div className="flex-1">
                 <h3 className="font-medium">{classItem.name}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Creada {format(classItem.createdAt, 'MMM d, yyyy', { locale: es })}
+                  Creada{" "}
+                  {format(classItem.createdAt, "MMM d, yyyy", { locale: es })}
                 </p>
               </div>
               <ArrowLeft className="h-4 w-4 rotate-180 text-muted-foreground" />
@@ -307,15 +362,19 @@ export default function NoteDetail() {
                 <Input
                   id="title"
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   required
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="class">Clase (Opcional)</Label>
-                <Select 
-                  value={formData.classID} 
-                  onValueChange={(value) => setFormData({ ...formData, classID: value })}
+                <Select
+                  value={formData.classID}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, classID: value })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccionar clase" />
@@ -325,8 +384,8 @@ export default function NoteDetail() {
                     {classes.map((classItem) => (
                       <SelectItem key={classItem.id} value={classItem.id}>
                         <div className="flex items-center gap-2">
-                          <div 
-                            className="h-3 w-3 rounded-full" 
+                          <div
+                            className="h-3 w-3 rounded-full"
                             style={{ backgroundColor: classItem.color }}
                           />
                           {classItem.name}
@@ -341,7 +400,9 @@ export default function NoteDetail() {
                 <Textarea
                   id="content"
                   value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, content: e.target.value })
+                  }
                   rows={12}
                   className="resize-none"
                   required
@@ -349,12 +410,14 @@ export default function NoteDetail() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setShowEditDialog(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowEditDialog(false)}
+              >
                 Cancelar
               </Button>
-              <Button type="submit">
-                Guardar Cambios
-              </Button>
+              <Button type="submit">Guardar Cambios</Button>
             </DialogFooter>
           </form>
         </DialogContent>

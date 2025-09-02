@@ -40,43 +40,83 @@ const App = () => (
       <ThemeProvider>
         <AuthProvider>
           <DataProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Navigate to={clerkEnabled ? "/sign-in" : "/login"} replace />} />
-              <Route path="/login" element={clerkEnabled ? <Navigate to="/sign-in" replace /> : <Login />} />
-              <Route path="/register" element={clerkEnabled ? <Navigate to="/sign-up" replace /> : <Register />} />
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Navigate
+                      to={clerkEnabled ? "/sign-in" : "/login"}
+                      replace
+                    />
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    clerkEnabled ? (
+                      <Navigate to="/sign-in" replace />
+                    ) : (
+                      <Login />
+                    )
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    clerkEnabled ? (
+                      <Navigate to="/sign-up" replace />
+                    ) : (
+                      <Register />
+                    )
+                  }
+                />
 
-              {clerkEnabled && (
-                <>
-                  <Route path="/sign-in" element={<div className="min-h-screen flex items-center justify-center p-4"><SignIn routing="path" path="/sign-in" /></div>} />
-                  <Route path="/sign-up" element={<div className="min-h-screen flex items-center justify-center p-4"><SignUp routing="path" path="/sign-up" /></div>} />
-                </>
-              )}
+                {clerkEnabled && (
+                  <>
+                    <Route
+                      path="/sign-in"
+                      element={
+                        <div className="min-h-screen flex items-center justify-center p-4">
+                          <SignIn routing="path" path="/sign-in" />
+                        </div>
+                      }
+                    />
+                    <Route
+                      path="/sign-up"
+                      element={
+                        <div className="min-h-screen flex items-center justify-center p-4">
+                          <SignUp routing="path" path="/sign-up" />
+                        </div>
+                      }
+                    />
+                  </>
+                )}
 
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashboardLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Dashboard />} />
-                <Route path="classes" element={<Classes />} />
-                <Route path="classes/:classId" element={<ClassDetail />} />
-                <Route path="tasks" element={<Tasks />} />
-                <Route path="notes" element={<Notes />} />
-                <Route path="notes/:noteId" element={<NoteDetail />} />
-                <Route path="contacts" element={<Contacts />} />
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="settings" element={<Settings />} />
-              </Route>
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Dashboard />} />
+                  <Route path="classes" element={<Classes />} />
+                  <Route path="classes/:classId" element={<ClassDetail />} />
+                  <Route path="tasks" element={<Tasks />} />
+                  <Route path="notes" element={<Notes />} />
+                  <Route path="notes/:noteId" element={<NoteDetail />} />
+                  <Route path="contacts" element={<Contacts />} />
+                  <Route path="calendar" element={<Calendar />} />
+                  <Route path="settings" element={<Settings />} />
+                </Route>
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
           </DataProvider>
         </AuthProvider>
       </ThemeProvider>

@@ -37,15 +37,20 @@ function ClerkAuthProvider({ children }: { children: React.ReactNode }) {
   const { isLoaded, isSignedIn, user } = useUser();
   const { signOut } = useClerk();
 
-  const mappedUser: User | null = isSignedIn && user
-    ? {
-        uid: user.id,
-        name: user.fullName || user.username || user.primaryEmailAddress?.emailAddress || "User",
-        email: user.primaryEmailAddress?.emailAddress || "",
-        photoURL: user.imageUrl,
-        role: "student",
-      }
-    : null;
+  const mappedUser: User | null =
+    isSignedIn && user
+      ? {
+          uid: user.id,
+          name:
+            user.fullName ||
+            user.username ||
+            user.primaryEmailAddress?.emailAddress ||
+            "User",
+          email: user.primaryEmailAddress?.emailAddress || "",
+          photoURL: user.imageUrl,
+          role: "student",
+        }
+      : null;
 
   const value: AuthContextType = {
     user: mappedUser,
@@ -94,7 +99,9 @@ function MockAuthProvider({ children }: { children: React.ReactNode }) {
       setUser(mockUser);
       localStorage.setItem("skytrack_user", JSON.stringify(mockUser));
 
-      const existingClasses = localStorage.getItem(`skytrack_classes_${mockUser.uid}`);
+      const existingClasses = localStorage.getItem(
+        `skytrack_classes_${mockUser.uid}`,
+      );
       if (!existingClasses) {
         const sampleClasses = [
           {
