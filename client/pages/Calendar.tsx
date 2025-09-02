@@ -356,6 +356,14 @@ export default function Calendar() {
                     <div
                       key={day.toISOString()}
                       onClick={() => handleDayClick(day)}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        const eventId = e.dataTransfer.getData('text/plain');
+                        if (eventId) {
+                          updateEvent(eventId, { date: day });
+                        }
+                      }}
                       className={`
                         min-h-[80px] p-1 border rounded-lg cursor-pointer transition-colors hover:bg-accent
                         ${isCurrentMonth ? "bg-background" : "bg-muted/30 text-muted-foreground"}
@@ -377,6 +385,10 @@ export default function Calendar() {
                           return (
                             <div
                               key={event.id}
+                              draggable
+                              onDragStart={(e) => {
+                                e.dataTransfer.setData('text/plain', event.id);
+                              }}
                               className="text-xs p-1 rounded text-white truncate"
                               style={{
                                 backgroundColor: classItem?.color || "#6366f1",
