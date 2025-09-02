@@ -27,7 +27,7 @@ export default function NoteDetail() {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    classID: ''
+    classID: 'none'
   });
   
   const note = notes.find(n => n.id === noteId);
@@ -60,7 +60,7 @@ export default function NoteDetail() {
     setFormData({
       title: note.title,
       content: note.content,
-      classID: note.classID
+      classID: note.classID || 'none'
     });
     setShowEditDialog(true);
   };
@@ -72,7 +72,7 @@ export default function NoteDetail() {
     updateNote(note.id, {
       title: formData.title,
       content: formData.content,
-      classID: formData.classID
+      classID: formData.classID === 'none' ? '' : formData.classID
     });
     
     setShowEditDialog(false);
@@ -321,7 +321,7 @@ export default function NoteDetail() {
                     <SelectValue placeholder="Seleccionar clase" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Sin clase asociada</SelectItem>
+                    <SelectItem value="none">Sin clase asociada</SelectItem>
                     {classes.map((classItem) => (
                       <SelectItem key={classItem.id} value={classItem.id}>
                         <div className="flex items-center gap-2">
