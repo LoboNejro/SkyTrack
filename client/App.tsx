@@ -31,8 +31,6 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-const clerkEnabled = !!(import.meta as any).env.VITE_CLERK_PUBLISHABLE_KEY;
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
