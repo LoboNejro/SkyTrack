@@ -45,52 +45,14 @@ const App = () => (
                   path="/"
                   element={
                     <Navigate
-                      to={clerkEnabled ? "/sign-in" : "/login"}
+                      to={"/login"}
                       replace
                     />
                   }
                 />
-                <Route
-                  path="/login"
-                  element={
-                    clerkEnabled ? (
-                      <Navigate to="/sign-in" replace />
-                    ) : (
-                      <Login />
-                    )
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    clerkEnabled ? (
-                      <Navigate to="/sign-up" replace />
-                    ) : (
-                      <Register />
-                    )
-                  }
-                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-                {clerkEnabled && (
-                  <>
-                    <Route
-                      path="/sign-in"
-                      element={
-                        <div className="min-h-screen flex items-center justify-center p-4">
-                          <SignIn routing="path" path="/sign-in" />
-                        </div>
-                      }
-                    />
-                    <Route
-                      path="/sign-up"
-                      element={
-                        <div className="min-h-screen flex items-center justify-center p-4">
-                          <SignUp routing="path" path="/sign-up" />
-                        </div>
-                      }
-                    />
-                  </>
-                )}
 
                 <Route
                   path="/dashboard"
