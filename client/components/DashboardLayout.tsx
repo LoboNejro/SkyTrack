@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import BottomNav from "./BottomNav";
 import { cn } from "../lib/utils";
 import {
   LayoutDashboard,
@@ -188,9 +188,11 @@ function UserMenu() {
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">
-          <User className="mr-2 h-4 w-4" />
-          Profile
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link to="/dashboard/profile">
+            <User className="mr-2 h-4 w-4" />
+            Perfil
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link to="/dashboard/settings">
@@ -220,14 +222,11 @@ export default function DashboardLayout() {
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-background via-muted/30 to-background">
-      <Sidebar className="hidden md:flex" />
-
       <div className="flex flex-1 flex-col overflow-hidden">
         <header className="sticky top-0 z-10 flex h-16 items-center px-3 lg:px-6 bg-transparent">
           <div className="mx-auto w-full max-w-6xl">
             <div className="flex h-12 items-center justify-between rounded-full border border-border/60 bg-background/70 backdrop-blur px-2 shadow-sm">
               <div className="flex items-center gap-2">
-                <MobileSidebar />
                 <Link to="/dashboard" className="hidden md:flex items-center gap-2 px-2 text-sm font-semibold text-foreground/90">
                   <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/90 text-primary-foreground shadow-sm">
                     <BookOpen className="h-3.5 w-3.5" />
@@ -248,9 +247,10 @@ export default function DashboardLayout() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+        <main className="flex-1 overflow-y-auto p-4 pb-24 lg:p-6 lg:pb-28">
           <Outlet />
         </main>
+        <BottomNav />
       </div>
     </div>
   );
