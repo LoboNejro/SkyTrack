@@ -42,14 +42,6 @@ export default function Settings() {
     return null;
   }
 
-  const handleSaveProfile = () => {
-    // Here you would update the user profile
-    // For now, we'll just show a toast
-    toast({
-      title: "Perfil actualizado",
-      description: "Tus cambios han sido guardados exitosamente.",
-    });
-  };
 
   const handleSaveTheme = () => {
     toast({
