@@ -184,8 +184,12 @@ export default function Calendar() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Calendario</h1>
-          <p className="text-muted-foreground">Gestiona tu horario y eventos académicos.</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+            Calendario
+          </h1>
+          <p className="text-muted-foreground">
+            Gestiona tu horario y eventos académicos.
+          </p>
         </div>
         <Dialog
           open={showAddDialog}
@@ -363,7 +367,7 @@ export default function Calendar() {
                       onDragOver={(e) => e.preventDefault()}
                       onDrop={(e) => {
                         e.preventDefault();
-                        const eventId = e.dataTransfer.getData('text/plain');
+                        const eventId = e.dataTransfer.getData("text/plain");
                         if (eventId) {
                           updateEvent(eventId, { date: day });
                         }
@@ -375,20 +379,28 @@ export default function Calendar() {
                       `}
                     >
                       <div className="flex items-start justify-between mb-1">
-                        <span className={`text-sm font-medium ${isCurrentDay ? "text-primary" : ""}`}>{format(day, "d")}</span>
+                        <span
+                          className={`text-sm font-medium ${isCurrentDay ? "text-primary" : ""}`}
+                        >
+                          {format(day, "d")}
+                        </span>
                       </div>
                       <div className="space-y-1">
                         {dayEvents.slice(0, 2).map((event) => {
-                          const classItem = classes.find((c) => c.id === event.classID);
+                          const classItem = classes.find(
+                            (c) => c.id === event.classID,
+                          );
                           return (
                             <div
                               key={event.id}
                               draggable
                               onDragStart={(e) => {
-                                e.dataTransfer.setData('text/plain', event.id);
+                                e.dataTransfer.setData("text/plain", event.id);
                               }}
                               className="text-[11px] px-2 py-1 rounded-full text-white truncate"
-                              style={{ backgroundColor: classItem?.color || "#6366f1" }}
+                              style={{
+                                backgroundColor: classItem?.color || "#6366f1",
+                              }}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleEdit(event);
@@ -399,7 +411,9 @@ export default function Calendar() {
                           );
                         })}
                         {dayEvents.length > 2 && (
-                          <div className="text-[11px] text-muted-foreground">+{dayEvents.length - 2} más</div>
+                          <div className="text-[11px] text-muted-foreground">
+                            +{dayEvents.length - 2} más
+                          </div>
                         )}
                       </div>
                     </div>
