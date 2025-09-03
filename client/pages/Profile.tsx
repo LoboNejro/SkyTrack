@@ -5,8 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { ID } from "appwrite";
-import { appwriteReady, storage } from "../lib/appwrite";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Upload, Save, User as UserIcon, Mail } from "lucide-react";
 
@@ -25,13 +23,19 @@ export default function Profile() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const bucketId = import.meta.env.VITE_APPWRITE_BUCKET_ID as string | undefined;
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string | undefined;
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string | undefined;
 
-    if (appwriteReady && bucketId) {
-      const created = await storage.createFile(bucketId, ID.unique(), file);
-      const url = storage.getFilePreview(bucketId, created.$id).href;
-      setPhotoURL(url);
-      await updateProfile({ photoURL: url });
+    if (cloudName && uploadPreset) {
+      const form = new FormData();
+      form.append('file', file);
+      form.append('upload_preset', uploadPreset);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, { method: 'POST', body: form });
+      const data = await res.json();
+      if (data.secure_url) {
+        setPhotoURL(data.secure_url);
+        await updateProfile({ photoURL: data.secure_url });
+      }
     } else {
       const url = URL.createObjectURL(file);
       setPhotoURL(url);
