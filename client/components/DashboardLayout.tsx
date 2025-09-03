@@ -72,10 +72,10 @@ function NavItem({
       to={item.href}
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+        "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
         isActive
-          ? "bg-sidebar-accent text-sidebar-accent-foreground"
-          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+          ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
+          : "text-sidebar-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground",
       )}
     >
       <item.icon className="h-4 w-4" />
@@ -223,10 +223,29 @@ export default function DashboardLayout() {
       <Sidebar className="hidden md:flex" />
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur lg:px-6">
-          <MobileSidebar />
-          <div className="flex-1" />
-          <UserMenu />
+        <header className="sticky top-0 z-10 flex h-16 items-center px-3 lg:px-6 bg-transparent">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="flex h-12 items-center justify-between rounded-full border border-border/60 bg-background/70 backdrop-blur px-2 shadow-sm">
+              <div className="flex items-center gap-2">
+                <MobileSidebar />
+                <Link to="/dashboard" className="hidden md:flex items-center gap-2 px-2 text-sm font-semibold text-foreground/90">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/90 text-primary-foreground shadow-sm">
+                    <BookOpen className="h-3.5 w-3.5" />
+                  </span>
+                  <span>SkyTrack</span>
+                </Link>
+              </div>
+              <div className="flex-1 flex justify-center px-2">
+                <div className="hidden md:flex w-full max-w-md items-center gap-2 rounded-full border border-input/60 bg-background/60 px-3 py-1.5 text-sm text-muted-foreground shadow-sm">
+                  <span className="h-2 w-2 rounded-full bg-primary/70" />
+                  <span className="truncate">Busca clases, tareas o notas…</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1">
+                <UserMenu />
+              </div>
+            </div>
+          </div>
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-6">
