@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, BookOpen, CheckSquare, FileText, Calendar, User } from "lucide-react";
+import { LayoutDashboard, BookOpen, CheckSquare, FileText, Calendar, User, Settings } from "lucide-react";
 import { cn } from "../lib/utils";
 
 const items = [
@@ -9,6 +9,7 @@ const items = [
   { to: "/dashboard/tasks", icon: CheckSquare, label: "Tareas" },
   { to: "/dashboard/notes", icon: FileText, label: "Notas" },
   { to: "/dashboard/calendar", icon: Calendar, label: "Calendario" },
+  { to: "/dashboard/settings", icon: Settings, label: "Ajustes" },
   { to: "/dashboard/profile", icon: User, label: "Perfil" },
 ];
 
