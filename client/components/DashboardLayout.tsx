@@ -224,7 +224,7 @@ export default function DashboardLayout() {
       <div className="flex flex-1 flex-col overflow-hidden">
         <header className="sticky top-0 z-10 flex h-16 items-center px-3 lg:px-6 bg-transparent">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="flex h-12 items-center justify-between rounded-full border border-border/60 bg-background/70 backdrop-blur px-2 shadow-sm">
+            <div className="flex h-12 items-center justify-between rounded-full bg-background/70 backdrop-blur px-2 shadow-sm">
               <div className="flex items-center gap-2">
                 <Link to="/dashboard" className="hidden md:flex items-center gap-2 px-2 text-sm font-semibold text-foreground/90">
                   <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/90 text-primary-foreground shadow-sm">
