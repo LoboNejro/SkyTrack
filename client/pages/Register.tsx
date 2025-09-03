@@ -60,7 +60,6 @@ export default function Register() {
     }
   };
 
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-blue-50/50 to-purple-50/50 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
@@ -182,7 +181,9 @@ export default function Register() {
             </form>
 
             <div className="text-center text-sm">
-              <span className="text-muted-foreground">Already have an account? </span>
+              <span className="text-muted-foreground">
+                Already have an account?{" "}
+              </span>
               <Link
                 to="/login"
                 className="text-primary hover:text-primary/80 font-medium"

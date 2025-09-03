@@ -161,7 +161,10 @@ function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-accent/60">
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full hover:bg-accent/60"
+        >
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.photoURL} alt={user.name} />
             <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
@@ -176,8 +179,12 @@ function UserMenu() {
           </Avatar>
           <div className="flex min-w-0 flex-col space-y-0.5">
             <p className="truncate font-medium leading-tight">{user.name}</p>
-            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-            <p className="text-xs text-muted-foreground capitalize">{user.role}</p>
+            <p className="truncate text-xs text-muted-foreground">
+              {user.email}
+            </p>
+            <p className="text-xs text-muted-foreground capitalize">
+              {user.role}
+            </p>
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -192,7 +199,10 @@ function UserMenu() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout} className="text-destructive focus:text-destructive">
+        <DropdownMenuItem
+          onClick={logout}
+          className="text-destructive focus:text-destructive"
+        >
           <LogOut className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>
