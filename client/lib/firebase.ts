@@ -9,10 +9,21 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+export const firebaseReady = Boolean(
+  firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId && firebaseConfig.appId,
+);
 
-export const auth = getAuth(app);
+let app: ReturnType<typeof initializeApp> | undefined;
+let _auth: ReturnType<typeof getAuth> | null = null;
+let _db: ReturnType<typeof getFirestore> | null = null;
+
+if (firebaseReady) {
+  app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+  _auth = getAuth(app);
+  _db = getFirestore(app);
+  setPersistence(_auth, browserLocalPersistence).catch(() => {});
+}
+
+export const auth = _auth;
+export const db = _db;
 export const googleProvider = new GoogleAuthProvider();
-export const db = getFirestore(app);
-
-setPersistence(auth, browserLocalPersistence).catch(() => {});
