@@ -11,6 +11,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { DataProvider } from "./contexts/DataContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 // Components
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -28,6 +29,7 @@ import NoteDetail from "./pages/NoteDetail";
 import Contacts from "./pages/Contacts";
 import Calendar from "./pages/Calendar";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,8 +37,9 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
-        <AuthProvider>
-          <DataProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <DataProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
@@ -71,6 +74,7 @@ const App = () => (
                   <Route path="contacts" element={<Contacts />} />
                   <Route path="calendar" element={<Calendar />} />
                   <Route path="settings" element={<Settings />} />
+                  <Route path="profile" element={<Profile />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />
@@ -78,6 +82,7 @@ const App = () => (
             </BrowserRouter>
           </DataProvider>
         </AuthProvider>
+      </LanguageProvider>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
