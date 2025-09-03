@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { auth, db, googleProvider, firebaseReady } from '../lib/firebase';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { auth, db, googleProvider, firebaseReady } from "../lib/firebase";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -7,15 +7,15 @@ import {
   signInWithPopup,
   updateProfile as fbUpdateProfile,
   signOut,
-} from 'firebase/auth';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+} from "firebase/auth";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 export interface User {
   uid: string;
   name: string;
   email: string;
   photoURL?: string;
-  role: 'student' | 'teacher' | 'tutor';
+  role: "student" | "teacher" | "tutor";
 }
 
 interface AuthContextType {
@@ -25,10 +25,12 @@ interface AuthContextType {
     email: string,
     password: string,
     name: string,
-    role: User['role'],
+    role: User["role"],
   ) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
-  updateProfile: (updates: Partial<Pick<User, 'name' | 'photoURL'>>) => Promise<void>;
+  updateProfile: (
+    updates: Partial<Pick<User, "name" | "photoURL">>,
+  ) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -37,21 +39,26 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
   return ctx;
 }
 
-async function ensureUserDoc(u: { uid: string; displayName: string | null; email: string; photoURL: string | null }) {
-  if (!firebaseReady || !db) throw new Error('Firestore not ready');
-  const ref = doc(db, 'users', u.uid);
+async function ensureUserDoc(u: {
+  uid: string;
+  displayName: string | null;
+  email: string;
+  photoURL: string | null;
+}) {
+  if (!firebaseReady || !db) throw new Error("Firestore not ready");
+  const ref = doc(db, "users", u.uid);
   const snap = await getDoc(ref);
   if (!snap.exists()) {
     const userDoc: User = {
       uid: u.uid,
-      name: u.displayName || u.email.split('@')[0],
+      name: u.displayName || u.email.split("@")[0],
       email: u.email,
       photoURL: u.photoURL || undefined,
-      role: 'student',
+      role: "student",
     };
     await setDoc(ref, userDoc);
     return userDoc;
@@ -65,7 +72,7 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!firebaseReady || !auth) {
-      const saved = localStorage.getItem('skytrack_user');
+      const saved = localStorage.getItem("skytrack_user");
       if (saved) setUser(JSON.parse(saved));
       setLoading(false);
       return;
@@ -94,9 +101,14 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     try {
       if (!firebaseReady || !auth) {
-        const mock: User = { uid: crypto.randomUUID(), name: email.split('@')[0], email, role: 'student' };
+        const mock: User = {
+          uid: crypto.randomUUID(),
+          name: email.split("@")[0],
+          email,
+          role: "student",
+        };
         setUser(mock);
-        localStorage.setItem('skytrack_user', JSON.stringify(mock));
+        localStorage.setItem("skytrack_user", JSON.stringify(mock));
         return;
       }
       await signInWithEmailAndPassword(auth, email, password);
@@ -109,14 +121,14 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
     email: string,
     password: string,
     name: string,
-    role: User['role'],
+    role: User["role"],
   ) => {
     setLoading(true);
     try {
       if (!firebaseReady || !auth || !db) {
         const newUser: User = { uid: crypto.randomUUID(), name, email, role };
         setUser(newUser);
-        localStorage.setItem('skytrack_user', JSON.stringify(newUser));
+        localStorage.setItem("skytrack_user", JSON.stringify(newUser));
         return;
       }
       const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -130,7 +142,7 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
         role,
         photoURL: auth.currentUser?.photoURL || undefined,
       };
-      await setDoc(doc(db, 'users', cred.user.uid), newUser);
+      await setDoc(doc(db, "users", cred.user.uid), newUser);
       setUser(newUser);
     } finally {
       setLoading(false);
@@ -141,9 +153,14 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     try {
       if (!firebaseReady || !auth) {
-        const mock: User = { uid: crypto.randomUUID(), name: 'Google User', email: 'user@example.com', role: 'student' };
+        const mock: User = {
+          uid: crypto.randomUUID(),
+          name: "Google User",
+          email: "user@example.com",
+          role: "student",
+        };
         setUser(mock);
-        localStorage.setItem('skytrack_user', JSON.stringify(mock));
+        localStorage.setItem("skytrack_user", JSON.stringify(mock));
         return;
       }
       const res = await signInWithPopup(auth, googleProvider);
@@ -158,18 +175,20 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const updateProfile = async (updates: Partial<Pick<User, 'name' | 'photoURL'>>) => {
+  const updateProfile = async (
+    updates: Partial<Pick<User, "name" | "photoURL">>,
+  ) => {
     if (!user) return;
     if (!firebaseReady || !auth || !db) {
       const merged = { ...user, ...updates } as User;
       setUser(merged);
-      localStorage.setItem('skytrack_user', JSON.stringify(merged));
+      localStorage.setItem("skytrack_user", JSON.stringify(merged));
       return;
     }
     if (auth.currentUser && updates.name) {
       await fbUpdateProfile(auth.currentUser, { displayName: updates.name });
     }
-    await updateDoc(doc(db, 'users', user.uid), updates as any);
+    await updateDoc(doc(db, "users", user.uid), updates as any);
     const merged = { ...user, ...updates } as User;
     setUser(merged);
   };
@@ -177,10 +196,18 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     if (firebaseReady && auth) signOut(auth);
     setUser(null);
-    localStorage.removeItem('skytrack_user');
+    localStorage.removeItem("skytrack_user");
   };
 
-  const value: AuthContextType = { user, login, register, loginWithGoogle, updateProfile, logout, loading };
+  const value: AuthContextType = {
+    user,
+    login,
+    register,
+    loginWithGoogle,
+    updateProfile,
+    logout,
+    loading,
+  };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
