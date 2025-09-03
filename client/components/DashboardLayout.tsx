@@ -21,7 +21,6 @@ import {
   Calendar,
   LogOut,
   Settings,
-  Menu,
   User,
 } from "lucide-react";
 
