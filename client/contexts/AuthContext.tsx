@@ -20,6 +20,7 @@ interface AuthContextType {
     role: User["role"],
   ) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
+  updateProfile: (updates: Partial<Pick<User, "name" | "photoURL">>) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -43,7 +44,8 @@ function AppwriteAuthProvider({ children }: { children: React.ReactNode }) {
       try {
         if (appwriteReady) {
           const me = await account.get();
-          setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role: "student" });
+          const photoURL = (me.prefs as any)?.photoURL as string | undefined;
+          setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role: "student", photoURL });
         } else {
           const savedUser = localStorage.getItem("skytrack_user");
           if (savedUser) setUser(JSON.parse(savedUser));
@@ -63,7 +65,8 @@ function AppwriteAuthProvider({ children }: { children: React.ReactNode }) {
       if (appwriteReady) {
         await account.createEmailSession(email, password);
         const me = await account.get();
-        setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role: "student" });
+        const photoURL = (me.prefs as any)?.photoURL as string | undefined;
+        setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role: "student", photoURL });
       } else {
         const mockUser: User = { uid: crypto.randomUUID(), name: email.split("@")[0], email, role: "student" };
         setUser(mockUser);
@@ -86,7 +89,8 @@ function AppwriteAuthProvider({ children }: { children: React.ReactNode }) {
         await account.create(ID.unique(), email, password, name);
         await account.createEmailSession(email, password);
         const me = await account.get();
-        setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role });
+        const photoURL = (me.prefs as any)?.photoURL as string | undefined;
+        setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role, photoURL });
       } else {
         const newUser: User = { uid: crypto.randomUUID(), name, email, role };
         setUser(newUser);
@@ -105,13 +109,28 @@ function AppwriteAuthProvider({ children }: { children: React.ReactNode }) {
     window.location.href = account.createOAuth2Session("google", success, failure).href ?? `/login`;
   };
 
+  const updateProfile = async (updates: Partial<Pick<User, "name" | "photoURL">>) => {
+    if (!user) return;
+    if (appwriteReady) {
+      if (updates.name) await account.updateName(updates.name);
+      if (updates.photoURL !== undefined) await account.updatePrefs({ photoURL: updates.photoURL });
+      const me = await account.get();
+      const photoURL = (me.prefs as any)?.photoURL as string | undefined;
+      setUser({ uid: me.$id, name: me.name || me.email, email: me.email, role: user.role, photoURL });
+    } else {
+      const newUser = { ...user, ...updates } as User;
+      setUser(newUser);
+      localStorage.setItem("skytrack_user", JSON.stringify(newUser));
+    }
+  };
+
   const logout = () => {
     if (appwriteReady) account.deleteSession("current");
     setUser(null);
     localStorage.removeItem("skytrack_user");
   };
 
-  const value: AuthContextType = { user, login, register, loginWithGoogle, logout, loading };
+  const value: AuthContextType = { user, login, register, loginWithGoogle, updateProfile, logout, loading };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
