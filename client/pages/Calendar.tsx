@@ -184,10 +184,8 @@ export default function Calendar() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Calendario</h1>
-          <p className="text-muted-foreground">
-            Gestiona tu horario y eventos académicos.
-          </p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Calendario</h1>
+          <p className="text-muted-foreground">Gestiona tu horario y eventos académicos.</p>
         </div>
         <Dialog
           open={showAddDialog}
@@ -325,12 +323,18 @@ export default function Calendar() {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="icon"
+                  className="rounded-full"
                   onClick={handlePreviousMonth}
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                <Button variant="outline" size="sm" onClick={handleNextMonth}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={handleNextMonth}
+                >
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
@@ -346,7 +350,7 @@ export default function Calendar() {
                   </div>
                 ))}
               </div>
-              <div className="grid grid-cols-7 gap-1">
+              <div className="grid grid-cols-7 gap-2">
                 {calendarDays.map((day) => {
                   const dayEvents = getEventsForDay(day);
                   const isCurrentMonth = isSameMonth(day, currentDate);
@@ -365,23 +369,17 @@ export default function Calendar() {
                         }
                       }}
                       className={`
-                        min-h-[80px] p-1 border rounded-lg cursor-pointer transition-colors hover:bg-accent
-                        ${isCurrentMonth ? "bg-background" : "bg-muted/30 text-muted-foreground"}
-                        ${isCurrentDay ? "ring-2 ring-primary" : ""}
+                        aspect-square p-2 rounded-xl cursor-pointer transition-all border border-border/50 bg-gradient-to-br from-card/70 to-card/40 backdrop-blur hover:shadow-sm
+                        ${isCurrentMonth ? "" : "opacity-70 text-muted-foreground"}
+                        ${isCurrentDay ? "outline outline-2 outline-primary/60" : ""}
                       `}
                     >
-                      <div
-                        className={`text-sm font-medium mb-1 ${
-                          isCurrentDay ? "text-primary" : ""
-                        }`}
-                      >
-                        {format(day, "d")}
+                      <div className="flex items-start justify-between mb-1">
+                        <span className={`text-sm font-medium ${isCurrentDay ? "text-primary" : ""}`}>{format(day, "d")}</span>
                       </div>
                       <div className="space-y-1">
                         {dayEvents.slice(0, 2).map((event) => {
-                          const classItem = classes.find(
-                            (c) => c.id === event.classID,
-                          );
+                          const classItem = classes.find((c) => c.id === event.classID);
                           return (
                             <div
                               key={event.id}
@@ -389,10 +387,8 @@ export default function Calendar() {
                               onDragStart={(e) => {
                                 e.dataTransfer.setData('text/plain', event.id);
                               }}
-                              className="text-xs p-1 rounded text-white truncate"
-                              style={{
-                                backgroundColor: classItem?.color || "#6366f1",
-                              }}
+                              className="text-[11px] px-2 py-1 rounded-full text-white truncate"
+                              style={{ backgroundColor: classItem?.color || "#6366f1" }}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleEdit(event);
@@ -403,9 +399,7 @@ export default function Calendar() {
                           );
                         })}
                         {dayEvents.length > 2 && (
-                          <div className="text-xs text-muted-foreground">
-                            +{dayEvents.length - 2} más
-                          </div>
+                          <div className="text-[11px] text-muted-foreground">+{dayEvents.length - 2} más</div>
                         )}
                       </div>
                     </div>
