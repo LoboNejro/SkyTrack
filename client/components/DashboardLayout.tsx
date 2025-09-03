@@ -12,6 +12,7 @@ import {
 } from "./ui/dropdown-menu";
 import BottomNav from "./BottomNav";
 import { cn } from "../lib/utils";
+import GlobalSearch from "./GlobalSearch";
 import {
   LayoutDashboard,
   BookOpen,
@@ -234,9 +235,9 @@ export default function DashboardLayout() {
                 </Link>
               </div>
               <div className="flex-1 flex justify-center px-2">
-                <div className="hidden md:flex w-full max-w-md items-center gap-2 rounded-full border border-input/60 bg-background/60 px-3 py-1.5 text-sm text-muted-foreground shadow-sm">
-                  <span className="h-2 w-2 rounded-full bg-primary/70" />
-                  <span className="truncate">Busca clases, tareas o notas…</span>
+                <div className="hidden md:block w-full max-w-md">
+                  {/* Global Search */}
+                  <GlobalSearch />
                 </div>
               </div>
               <div className="flex items-center gap-1">
