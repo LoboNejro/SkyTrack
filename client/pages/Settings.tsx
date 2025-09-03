@@ -10,7 +10,7 @@ import { Separator } from '../components/ui/separator';
 import { Badge } from '../components/ui/badge';
 import {
   ArrowLeft, Palette, Monitor,
-  Sun, Moon, Smartphone, Eye, RefreshCw
+  Sun, Moon, Smartphone, Eye, RefreshCw, Save, User
 } from 'lucide-react';
 import { Switch } from '../components/ui/switch';
 import LanguageSelect from '../components/LanguageSelect';
