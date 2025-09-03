@@ -178,6 +178,11 @@ export default function Tasks() {
     return "text-blue-600";
   };
 
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
+    e.dataTransfer.setData("text/plain", id);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
   const TaskCard = ({ task }: { task: Task }) => {
     const classItem = classes.find((c) => c.id === task.classID);
     const isOverdue =
@@ -185,7 +190,9 @@ export default function Tasks() {
 
     return (
       <Card
-        className={`hover:shadow-md transition-shadow ${
+        draggable
+        onDragStart={(e) => onDragStart(e, task.id)}
+        className={`hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing ${
           task.status === "completed" ? "opacity-70" : ""
         } ${isOverdue ? "border-red-200 bg-red-50/50" : ""}`}
       >
@@ -282,10 +289,8 @@ export default function Tasks() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Tasks</h1>
-          <p className="text-muted-foreground">
-            Track and manage your assignments and to-dos.
-          </p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Tasks</h1>
+          <p className="text-muted-foreground">Track and manage your assignments and to-dos.</p>
         </div>
         <Dialog
           open={showAddDialog}
@@ -539,25 +544,57 @@ export default function Tasks() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
+          <TabsContent
+            value="all"
+            className="space-y-4"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              const id = e.dataTransfer.getData("text/plain");
+              if (id) updateTask(id, { status: "pending" });
+            }}
+          >
             {filteredTasks.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}
           </TabsContent>
 
-          <TabsContent value="pending" className="space-y-4">
+          <TabsContent
+            value="pending"
+            className="space-y-4"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              const id = e.dataTransfer.getData("text/plain");
+              if (id) updateTask(id, { status: "pending" });
+            }}
+          >
             {tasksByStatus.pending.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}
           </TabsContent>
 
-          <TabsContent value="overdue" className="space-y-4">
+          <TabsContent
+            value="overdue"
+            className="space-y-4"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              const id = e.dataTransfer.getData("text/plain");
+              if (id) updateTask(id, { status: "pending" });
+            }}
+          >
             {tasksByStatus.overdue.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}
           </TabsContent>
 
-          <TabsContent value="completed" className="space-y-4">
+          <TabsContent
+            value="completed"
+            className="space-y-4"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              const id = e.dataTransfer.getData("text/plain");
+              if (id) updateTask(id, { status: "completed" });
+            }}
+          >
             {tasksByStatus.completed.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}
