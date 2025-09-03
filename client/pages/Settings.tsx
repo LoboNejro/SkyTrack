@@ -4,16 +4,16 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Separator } from '../components/ui/separator';
 import { Badge } from '../components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
-import { 
-  User, Mail, Briefcase, ArrowLeft, Palette, Monitor, 
-  Sun, Moon, Smartphone, Save, Eye, RefreshCw
+import {
+  ArrowLeft, Palette, Monitor,
+  Sun, Moon, Smartphone, Eye, RefreshCw
 } from 'lucide-react';
+import { Switch } from '../components/ui/switch';
+import LanguageSelect from '../components/LanguageSelect';
 import { toast } from '../hooks/use-toast';
 
 const themeColors = [
@@ -91,114 +91,42 @@ export default function Settings() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Profile Settings */}
+        {/* General Settings */}
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                Información del Perfil
+                <Smartphone className="h-5 w-5" />
+                Preferencias Generales
               </CardTitle>
-              <CardDescription>
-                Actualiza tu información personal y datos de la cuenta.
-              </CardDescription>
+              <CardDescription>Idioma, notificaciones y personalización.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Profile Picture Section */}
-              <div className="flex items-center gap-4">
-                <Avatar className="h-20 w-20">
-                  <AvatarImage src={user.photoURL} alt={user.name} />
-                  <AvatarFallback className="text-lg">
-                    {user.name.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="space-y-2">
-                  <h3 className="font-medium">Foto de Perfil</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Actualiza tu foto de perfil desde tu cuenta de Google o sube una nueva imagen.
-                  </p>
-                  <Button variant="outline" size="sm" disabled>
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Actualizar Foto
-                  </Button>
-                </div>
+              {/* Language */}
+              <div className="space-y-2">
+                <Label>Idioma</Label>
+                <LanguageSelect />
+                <p className="text-xs text-muted-foreground">El idioma se aplicará en toda la app.</p>
               </div>
 
               <Separator />
 
-              {/* Personal Information */}
+              {/* Notifications */}
               <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Nombre Completo</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="pl-10"
-                      placeholder="Tu nombre completo"
-                    />
+                <div className="flex items-center justify-between rounded-xl border p-3">
+                  <div>
+                    <p className="text-sm font-medium">Notificaciones por Email</p>
+                    <p className="text-xs text-muted-foreground">Recordatorios y actualizaciones importantes.</p>
                   </div>
+                  <Switch defaultChecked />
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="pl-10"
-                      placeholder="tu@email.com"
-                    />
+                <div className="flex items-center justify-between rounded-xl border p-3">
+                  <div>
+                    <p className="text-sm font-medium">Notificaciones Push</p>
+                    <p className="text-xs text-muted-foreground">Alertas en tiempo real en tu dispositivo.</p>
                   </div>
+                  <Switch />
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="role">Rol</Label>
-                  <div className="relative">
-                    <Briefcase className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
-                    <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value as any })}>
-                      <SelectTrigger className="pl-10">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="student">Estudiante</SelectItem>
-                        <SelectItem value="teacher">Profesor</SelectItem>
-                        <SelectItem value="tutor">Tutor</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Estado de la Cuenta</Label>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="default" className="bg-green-600">
-                      Activa
-                    </Badge>
-                    <Badge variant="outline">
-                      Verificada
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <Button onClick={handleSaveProfile}>
-                  <Save className="h-4 w-4 mr-2" />
-                  Guardar Cambios
-                </Button>
-                <Button variant="outline" onClick={() => setFormData({
-                  name: user.name,
-                  email: user.email,
-                  role: user.role
-                })}>
-                  Cancelar
-                </Button>
               </div>
             </CardContent>
           </Card>
