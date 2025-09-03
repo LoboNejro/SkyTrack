@@ -197,7 +197,7 @@ function UserMenu() {
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link to="/dashboard/settings">
             <Settings className="mr-2 h-4 w-4" />
-            Configuración
+            Ajustes
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
