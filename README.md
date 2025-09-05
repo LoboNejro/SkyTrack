@@ -1,44 +1,51 @@
 # ✨ SkyTrack
 
-**SkyTrack** es tu espacio digital para organizar todo lo que importa.
-Desde tus clases y tareas hasta tus eventos y notas personales, esta aplicación web está pensada para acompañarte en el día a día, manteniendo cada detalle en orden con un diseño limpio y fácil de usar.
+**SkyTrack** es mucho más que una simple aplicación de organización: es tu **espacio digital personal** para mantener todo lo importante bajo control.  
+Desde tus clases y tareas hasta tus eventos, metas y notas personales, esta herramienta está diseñada para ayudarte a vivir con más **claridad, equilibrio y productividad**, sin perder nunca de vista lo que realmente importa.  
+
+Su interfaz es **limpia, moderna y adaptable**, pensada para acompañarte tanto en la computadora como en tu celular, convirtiéndose en un aliado constante en tu día a día.  
 
 ---
 
 ## 🌸 Lo que puedes hacer con SkyTrack
 
-* 📚 **Gestionar tus clases y tareas** → nunca olvides una entrega o pendiente.
-* 📅 **Calendario claro y ordenado** → visualiza tus eventos importantes de un vistazo.
-* 📝 **Notas rápidas y elegantes** → guarda ideas o recordatorios al instante.
-* 👥 **Roles adaptables** → estudiante, trabajador o creativo, la app se ajusta a ti.
-* 🔑 **Acceso seguro** → inicia sesión con Google o con tu correo electrónico.
+* 📚 **Gestionar tus clases y tareas** → crea, organiza y prioriza actividades, evitando olvidos o pendientes de última hora.  
+* 📅 **Calendario claro y ordenado** → consulta tus eventos importantes con una vista intuitiva y minimalista.  
+* 📝 **Notas rápidas y elegantes** → captura ideas, pensamientos o recordatorios al instante sin complicaciones.  
+* 🎯 **Metas y progreso** → define objetivos y da seguimiento a tu avance, paso a paso.  
+* 👥 **Roles adaptables** → seas estudiante, profesional o creativo, SkyTrack se ajusta a tu estilo de vida.  
+* 🔑 **Acceso seguro y confiable** → inicia sesión fácilmente con Google o correo electrónico.  
 
 ---
 
 ## 💖 ¿Por qué elegir SkyTrack?
 
-SkyTrack no es solo una herramienta: es un **compañero de organización**.
-Su meta es ayudarte a sentir más tranquilidad y equilibrio, permitiéndote enfocarte en lo que realmente amas hacer.
+SkyTrack no es solo una aplicación de productividad: es un **compañero digital de confianza**.  
+Cada función está diseñada con un solo propósito: ayudarte a recuperar el control de tu tiempo, sentir mayor tranquilidad y liberar espacio mental para que puedas enfocarte en lo que realmente disfrutas.  
+
+En un mundo lleno de distracciones, SkyTrack te ofrece un **refugio organizado y sereno**.  
 
 ---
 
-## 🛠️ Creado con amor y tecnología
+## 🛠️ Tecnologías utilizadas
 
-* **TypeScript** para un desarrollo seguro y confiable.
-* **React + Tailwind CSS** para un diseño moderno y responsivo.
-* **Autenticación con Google & Email** para cuidar de tu seguridad.
+* **TypeScript** → para un desarrollo más seguro, legible y confiable.  
+* **React + Tailwind CSS** → interfaz moderna, responsiva y con diseño adaptable a cualquier dispositivo.  
+* **Autenticación con Google & Email** → protección de datos y accesos sencillos.  
+* **Vite** → compilación ultrarrápida para una experiencia fluida en desarrollo y producción.  
 
 ---
 
 ## 🌟 Visión a futuro
 
-Estamos trabajando en nuevas funciones como:
-✨ Recordatorios inteligentes.
-✨ Integración móvil.
-✨ Más formas de personalizar tu espacio.
+SkyTrack está en constante evolución 🚀. Algunas de las funciones que pronto llegarán incluyen:  
+
+* ✨ **Recordatorios inteligentes** con notificaciones personalizadas.  
+* 📱 **Aplicación móvil** para iOS y Android, siempre contigo.  
+* 🎨 **Más personalización** en temas, colores y organización de la interfaz.  
+* 🤝 **Colaboración en tiempo real** para trabajar en equipo o compartir notas y eventos.  
+* ☁️ **Sincronización avanzada en la nube** para mantener todo actualizado en cualquier dispositivo.  
 
 ---
 
-💫 *Organiza tu mundo, libera tu mente, y deja que SkyTrack sea tu lugar de calma y productividad.*
-
----
+💫 *Organiza tu mundo, libera tu mente y deja que **SkyTrack** sea tu refugio de calma, productividad y equilibrio.*  
